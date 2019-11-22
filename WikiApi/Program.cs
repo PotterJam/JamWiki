@@ -1,23 +1,22 @@
-﻿using System;
-using Npgsql;
-using NpgsqlTypes;
+﻿using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Hosting;
 
 namespace WikiApi
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            string postgresConStr = "Server=localhost;Port=5433;UserId=postgres;Password=darkanima;Database=wikiapi;";
-            NpgsqlConnection dbConnection = new NpgsqlConnection(postgresConStr);
-            NpgsqlCommand cmd = new NpgsqlCommand(@"INSERT INTO wiki_page (id, name)
-                                                             VALUES (@id, 'first_wiki')", dbConnection);
-            cmd.Parameters.AddWithValue("id", NpgsqlDbType.Uuid, Guid.NewGuid());
-            dbConnection.Open();
-            NpgsqlDataReader dr = cmd.ExecuteReader();
-            var insertResult = dr.Read();
-            dbConnection.Close();
-            Console.WriteLine("Hello World!");
+            var host = CreateHostBuilder(args).Build();
+            await host.RunAsync();
         }
+        
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
     }
 }
