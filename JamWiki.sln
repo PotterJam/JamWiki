@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WikiApi", "WikiApi\WikiApi.csproj", "{FAB727B5-28FB-4614-9CEB-6B84798D5FD9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FAB727B5-28FB-4614-9CEB-6B84798D5FD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAB727B5-28FB-4614-9CEB-6B84798D5FD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAB727B5-28FB-4614-9CEB-6B84798D5FD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAB727B5-28FB-4614-9CEB-6B84798D5FD9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
