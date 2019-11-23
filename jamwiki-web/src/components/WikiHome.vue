@@ -2,11 +2,9 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     
-    <h2>Immediate todo:</h2>
-    <ul>
-      <li>Search bar</li>
-      <li>Backend call</li>
-    </ul>
+    <div id="logo">
+      <img alt="Jam Logo" src="../assets/jam-logo.png">
+    </div>
   </div>
 </template>
 
@@ -34,5 +32,9 @@ li {
 }
 a {
   color: #42b983;
+}
+
+#logo {
+  padding: 1em;
 }
 </style>

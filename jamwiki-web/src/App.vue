@@ -22,7 +22,6 @@
 #header {
   display: flex;
   justify-content: center;
-  background: #ebeaea;
 }
 
 #nav {

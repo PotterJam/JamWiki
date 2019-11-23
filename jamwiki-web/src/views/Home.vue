@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <WikiHome msg="This is an initial screen"/>
+    <WikiHome msg="Welcome to Jam Wiki"/>
   </div>
 </template>
 
