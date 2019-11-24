@@ -2,10 +2,8 @@
   <div class="home">
     <WikiHome msg="Welcome to Jam Wiki"/>
     <div id="wiki-input-wrapper">
-      <div id="wiki-input">
-        <b-form-input v-model="wikiName" placeholder="Enter wiki name"></b-form-input>
-        <b-button id="get-wiki-but" variant="primary">Get wiki</b-button>
-      </div>
+      <b-form-input id="wiki-input" v-model="wikiName" placeholder="Enter wiki name"></b-form-input>
+      <b-button id="get-wiki-but" variant="primary">Get wiki</b-button>
     </div>
   </div>
 </template>
@@ -27,19 +25,18 @@ export default {
 #wiki-input-wrapper {
   display: flex;
   justify-content: center;
+  align-items: center;
+  padding: 1em;
 }
 
 #wiki-input {
-  align-items: center;
   display: flex;
-  padding: 1em;
-  width: 20%;
-  min-width: 200px;
+  margin-right: 1em; 
+  width: 11em;
 }
 
 #get-wiki-but {
-  margin: 1em;
-  min-width: 5.5em;
+  width: 5.5em;
 }
 
 </style>
