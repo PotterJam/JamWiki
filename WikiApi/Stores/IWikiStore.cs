@@ -6,5 +6,6 @@ namespace WikiApi
     public interface IWikiStore
     {
         Task<Wiki> GetWikiByName(string wikiName);
+        Task AddWiki(Wiki newWiki);
     }
 }

@@ -53,5 +53,21 @@ namespace WikiApi
             
             return new Wiki(wikiId, wikiName, wikiBody, wikiTags);
         }
+
+        public async Task AddWiki(Wiki newWiki)
+        {
+            NpgsqlCommand cmd = new NpgsqlCommand(@"INSERT INTO wiki_page(id, name, body, tags)
+                                                             VALUES (@id, @name, @body, @tags)", _dbConnection);
+            cmd.Parameters.AddWithValue("id", NpgsqlDbType.Uuid, newWiki.Id);
+            cmd.Parameters.AddWithValue("name", NpgsqlDbType.Text, newWiki.Name);
+            cmd.Parameters.AddWithValue("body", NpgsqlDbType.Text, newWiki.Body);
+            cmd.Parameters.AddWithValue("tags", NpgsqlDbType.Array | NpgsqlDbType.Text, newWiki.Tags);
+
+            var rowsChanged = await cmd.ExecuteNonQueryAsync();
+            if (rowsChanged != 1)
+            {
+                throw new NpgsqlException("Added more than one wiki, something has gone seriously wrong. ");
+            }
+        }
     }
 }

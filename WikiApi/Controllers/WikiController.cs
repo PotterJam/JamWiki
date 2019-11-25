@@ -23,9 +23,11 @@ namespace WikiApi.Controllers
         }
         
         [HttpPost]
-        public async Task<string> AddWiki()
+        public async Task AddWiki(string name, string body, string tags)
         {
-            throw new NotImplementedException("AddWiki not implemented.");
+            var tagsArr = tags.Split(",");
+            var newWiki = new Wiki(Guid.NewGuid(), name, body, tagsArr);
+            await _wikiStore.AddWiki(newWiki);
         }
         
         [HttpDelete]
