@@ -4,8 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WikiApi.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
+    [Produces("application/json")]
     public class WikiController : ControllerBase
     {
         private readonly IWikiStore _wikiStore;
@@ -15,20 +16,19 @@ namespace WikiApi.Controllers
             _wikiStore = wikiStore ?? throw new ArgumentNullException(nameof(wikiStore));
         }
         
-        [HttpGet("/")]
-        public async Task<string> GetWiki()
+        [HttpGet]
+        public async Task<Wiki> GetWiki(string name)
         {
-            var wiki = await _wikiStore.GetWiki(Guid.Parse("e7437f88-98ab-4dfc-a7a8-d71644c601da"));
-            return wiki != null ? wiki.Name : "Wiki not found";
+           return await _wikiStore.GetWikiByName(name);
         }
         
-        [HttpPost("/")]
+        [HttpPost]
         public async Task<string> AddWiki()
         {
             throw new NotImplementedException("AddWiki not implemented.");
         }
         
-        [HttpDelete("/")]
+        [HttpDelete]
         public async Task<string> RemoveWiki()
         {
             throw new NotImplementedException("RemoveWiki not implemented.");

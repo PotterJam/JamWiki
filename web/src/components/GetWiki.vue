@@ -4,7 +4,7 @@
       <b-form-input id="wiki-input" v-model="wikiName" placeholder="Enter wiki name"></b-form-input>
       <b-button v-on:click="getWiki" id="get-wiki-but" variant="primary">Get wiki</b-button>
     </div>
-    <span>{{ wiki.body }}</span>
+    <span v-if="wiki !== null">{{ wiki.body }}</span>
   </div>
 </template>
 

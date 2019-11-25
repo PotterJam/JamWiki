@@ -5,6 +5,6 @@ namespace WikiApi
 {
     public interface IWikiStore
     {
-        Task<Wiki> GetWiki(Guid wikiId);
+        Task<Wiki> GetWikiByName(string wikiName);
     }
 }
