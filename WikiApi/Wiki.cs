@@ -4,15 +4,15 @@ namespace WikiApi
 {
     public class Wiki
     {
-        public Guid id { get; }
-        public string name { get; }
-        public string[] tags { get; }
+        public Guid Id { get; }
+        public string Name { get; }
+        public string[] Tags { get; }
 
         public Wiki(Guid id, string name, string[] tags)
         {
-            this.id = id;
-            this.name = name;
-            this.tags = tags;
+            this.Id = id;
+            this.Name = name;
+            this.Tags = tags;
         }
     }
 }

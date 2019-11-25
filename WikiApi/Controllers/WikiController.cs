@@ -19,7 +19,7 @@ namespace WikiApi.Controllers
         public async Task<string> Index()
         {
             var wiki = await _wikiStore.GetWiki(Guid.Parse("e7437f88-98ab-4dfc-a7a8-d71644c601da"));
-            return (wiki != null) ? wiki.name : "Wiki not found";
+            return wiki != null ? wiki.Name : "Wiki not found";
         }
     }
 }

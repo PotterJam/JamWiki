@@ -11,24 +11,24 @@ namespace WikiApi
     {
         private readonly string postgresConStr = "Server=localhost;Port=5433;UserId=postgres;Password=darkanima;Database=wikiapi;";
  
-        private readonly NpgsqlConnection dbConnection;
+        private readonly NpgsqlConnection _dbConnection;
         
         public WikiStore()
         {
-            dbConnection = new NpgsqlConnection(postgresConStr);
-            dbConnection.Open();
+            _dbConnection = new NpgsqlConnection(postgresConStr);
+            _dbConnection.Open();
         }
 
         ~WikiStore()
         {
-            dbConnection.Close();
+            _dbConnection.Close();
         }
 
         public async Task<Wiki> GetWiki(Guid wikiId)
         {
             NpgsqlCommand cmd = new NpgsqlCommand(@"SELECT *
                                                              FROM wiki_page
-                                                             WHERE id = @id", dbConnection);
+                                                             WHERE id = @id", _dbConnection);
             cmd.Parameters.AddWithValue("id", NpgsqlDbType.Uuid, wikiId);
             
             DbDataReader reader = await cmd.ExecuteReaderAsync();
