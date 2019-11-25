@@ -20,7 +20,7 @@ export default {
   methods: {
     getWiki() {
       this.axios
-          .get('http://localhost:5000/api/wiki/name')
+          .get('http://localhost:5000/api/wiki')
           .then(response => this.wikiBody = response.data)
     }
   }

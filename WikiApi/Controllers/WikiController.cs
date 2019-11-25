@@ -15,11 +15,23 @@ namespace WikiApi.Controllers
             _wikiStore = wikiStore ?? throw new ArgumentNullException(nameof(wikiStore));
         }
         
-        [HttpGet("name")]
-        public async Task<string> Index()
+        [HttpGet("/")]
+        public async Task<string> GetWiki()
         {
             var wiki = await _wikiStore.GetWiki(Guid.Parse("e7437f88-98ab-4dfc-a7a8-d71644c601da"));
             return wiki != null ? wiki.Name : "Wiki not found";
+        }
+        
+        [HttpPost("/")]
+        public async Task<string> AddWiki()
+        {
+            throw new NotImplementedException("AddWiki not implemented.");
+        }
+        
+        [HttpDelete("/")]
+        public async Task<string> RemoveWiki()
+        {
+            throw new NotImplementedException("RemoveWiki not implemented.");
         }
     }
 }
