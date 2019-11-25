@@ -6,13 +6,15 @@ namespace WikiApi
     {
         public Guid Id { get; }
         public string Name { get; }
+        public string Body { get; }
         public string[] Tags { get; }
 
-        public Wiki(Guid id, string name, string[] tags)
+        public Wiki(Guid id, string name, string body, string[] tags)
         {
-            this.Id = id;
-            this.Name = name;
-            this.Tags = tags;
+            Id = id;
+            Name = name;
+            Tags = tags;
+            Body = body;
         }
     }
 }

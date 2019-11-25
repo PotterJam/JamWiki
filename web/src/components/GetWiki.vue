@@ -4,7 +4,7 @@
       <b-form-input id="wiki-input" v-model="wikiName" placeholder="Enter wiki name"></b-form-input>
       <b-button v-on:click="getWiki" id="get-wiki-but" variant="primary">Get wiki</b-button>
     </div>
-    <span>{{ wikiBody }}</span>
+    <span>{{ wiki.body }}</span>
   </div>
 </template>
 
@@ -14,14 +14,14 @@ export default {
   data () {
     return {
       wikiName: null,
-      wikiBody: null
+      wiki: null
     }
   },
   methods: {
     getWiki() {
       this.axios
-          .get('http://localhost:5000/api/wiki')
-          .then(response => this.wikiBody = response.data)
+          .get(`http://localhost:5000/api/wiki?name=${this.wikiName}`)
+          .then(response => this.wiki = response.data)
     }
   }
 }

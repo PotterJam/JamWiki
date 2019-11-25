@@ -40,6 +40,7 @@ namespace WikiApi
             }
 
             var wikiName = (string) reader["name"];
+            var wikiBody = (string) reader["body"];
 
             var tagsFromReader = reader["tags"];
             var wikiTags = new string[] { };
@@ -48,7 +49,7 @@ namespace WikiApi
                 wikiTags = (string[]) tagsFromReader;
             }
 
-            return new Wiki(wikiId, wikiName, wikiTags);
+            return new Wiki(wikiId, wikiName, wikiBody, wikiTags);
         }
     }
 }
