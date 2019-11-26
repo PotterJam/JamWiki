@@ -24,6 +24,7 @@
         </v-list-item>
       </template>
       </v-combobox>
+      <v-btn text icon color="primary" v-on:click="updateWiki" id="wiki-but"><v-icon>mdi-content-save</v-icon></v-btn>
       <v-btn text icon color="primary" v-on:click="addWiki" id="wiki-but"><v-icon>mdi-plus</v-icon></v-btn>
       <v-btn text icon color="primary" v-on:click="deleteWiki" id="wiki-but"><v-icon>mdi-delete</v-icon></v-btn>
     </div>
@@ -58,6 +59,14 @@ export default {
         this.editing = null
         this.index = -1
       }
+    },
+    updateWiki() {
+      this.axios
+          .post('http://localhost:5000/api/wiki/update', {
+            name: this.wikiName,
+            body: this.wikiBody,
+            tags: 'tags'
+          });
     },
     addWiki() {
       this.axios

@@ -10,5 +10,6 @@ namespace WikiApi
         Task AddWiki(Wiki newWiki);
         Task DeleteWikiByName(string name);
         Task<IEnumerable<string>> GetWikiNames();
+        Task UpdateWiki(Wiki updatedWiki);
     }
 }

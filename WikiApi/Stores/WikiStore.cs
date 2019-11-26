@@ -99,5 +99,19 @@ namespace WikiApi
 
             return wikiNames;
         }
+
+        public async Task UpdateWiki(Wiki updatedWiki)
+        {
+            NpgsqlCommand cmd = new NpgsqlCommand(@"UPDATE wiki_page SET body = @body, tags = @tags WHERE name = @name", _dbConnection);
+            cmd.Parameters.AddWithValue("name", NpgsqlDbType.Text, updatedWiki.Name);
+            cmd.Parameters.AddWithValue("body", NpgsqlDbType.Text, updatedWiki.Body);
+            cmd.Parameters.AddWithValue("tags", NpgsqlDbType.Array | NpgsqlDbType.Text, updatedWiki.Tags);
+
+            var rowsChanged = await cmd.ExecuteNonQueryAsync();
+            if (rowsChanged != 1)
+            {
+                throw new NpgsqlException("Added more than one wiki, something has gone seriously wrong. ");
+            }
+        }
     }
 }

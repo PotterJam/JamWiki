@@ -31,6 +31,14 @@ namespace WikiApi.Controllers
             await _wikiStore.AddWiki(newWiki);
         }
         
+        [HttpPost("update")]
+        public async Task UpdateWiki([FromBody] AddWikiRequest addWikiRequest)
+        {
+            var tagsArr = addWikiRequest.tags == null ? new string[] {} : addWikiRequest.tags.Split(",");
+            var newWiki = new Wiki(Guid.NewGuid(), addWikiRequest.name, addWikiRequest.body, tagsArr);
+            await _wikiStore.UpdateWiki(newWiki);
+        }
+        
         [HttpDelete]
         public async Task DeleteWiki([FromBody] DeleteWikiRequest addWikiRequest)
         {
