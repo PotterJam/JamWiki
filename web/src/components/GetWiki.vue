@@ -35,13 +35,13 @@ export default {
           .post('http://localhost:5000/api/wiki', {
             name: this.wikiName,
             body: this.wikiBody,
-            tags: []
+            tags: 'tags'
           }).then(() => this.wikiBody = 'Wiki added');
     },
     deleteWiki() {
       this.axios
           .delete('http://localhost:5000/api/wiki', {
-            name: this.wikiName
+            data: { name: this.wikiName }
           }).then(() => this.wikiBody = 'Wiki deleted')
     }
   }

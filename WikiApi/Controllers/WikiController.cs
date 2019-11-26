@@ -23,17 +23,29 @@ namespace WikiApi.Controllers
         }
         
         [HttpPost]
-        public async Task AddWiki(string name, string body, string tags)
+        public async Task AddWiki([FromBody] AddWikiRequest addWikiRequest)
         {
-            var tagsArr = tags == null ? new string[] {} : tags.Split(",");
-            var newWiki = new Wiki(Guid.NewGuid(), name, body, tagsArr);
+            var tagsArr = addWikiRequest.tags == null ? new string[] {} : addWikiRequest.tags.Split(",");
+            var newWiki = new Wiki(Guid.NewGuid(), addWikiRequest.name, addWikiRequest.body, tagsArr);
             await _wikiStore.AddWiki(newWiki);
         }
         
         [HttpDelete]
-        public async Task DeleteWiki(string name)
+        public async Task DeleteWiki([FromBody] DeleteWikiRequest addWikiRequest)
         {
-            await _wikiStore.DeleteWikiByName(name);
+            await _wikiStore.DeleteWikiByName(addWikiRequest.name);
+        }
+
+        public class AddWikiRequest
+        {
+            public string name { get; set; }
+            public string body { get; set; }
+            public string tags { get; set; }
+        }
+        
+        public class DeleteWikiRequest
+        {
+            public string name { get; set; }
         }
     }
 }
