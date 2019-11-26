@@ -1,28 +1,34 @@
 <template>
   <div>
     <div id="wiki-input-wrapper">
-      <v-autocomplete
+      <v-combobox
         id="wiki-input"
         v-model="wikiName"
         autocomplete="off"
         :items="wikiNames"
         :loading="isLoading"
         :search-input.sync="search"
-        hide-no-data
         hide-selected
         color="secondary"
-        item-text="Description"
-        item-value="API"
         label="Wikis"
         placeholder="Start typing to Search"
         prepend-icon="mdi-magnify"
-        return-object
-      ></v-autocomplete>
+      >
+        <template v-slot:no-data>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title>
+              No results matching "<strong>{{ search }}</strong>". Press <kbd>enter</kbd> to create a new one
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </template>
+      </v-combobox>
       <v-btn text icon color="primary" v-on:click="addWiki" id="wiki-but"><v-icon>mdi-plus</v-icon></v-btn>
       <v-btn text icon color="primary" v-on:click="deleteWiki" id="wiki-but"><v-icon>mdi-delete</v-icon></v-btn>
     </div>
     <div id="wiki-body-wrapper">
-      <v-textarea solo v-if="wikiBody !== null" label="Wiki body goes here..." rows="8" v-model="wikiBody"></v-textarea>
+      <v-textarea solo v-if="wikiBody !== null" label="Wiki body goes here..." rows="30" v-model="wikiBody"></v-textarea>
     </div>
   </div>
 </template>
@@ -36,10 +42,23 @@ export default {
       wikiBody: null,
       wikiNames: [],
       isLoading: false,
-      search: null
+      search: null,
+      colors: ['green', 'purple', 'indigo', 'cyan', 'teal', 'orange'],
+      editing: null,
+      index: -1,
+      menu: false
     }
   },
   methods: {
+    edit(index, item) {
+      if (!this.editing) {
+        this.editing = item
+        this.index = index
+      } else {
+        this.editing = null
+        this.index = -1
+      }
+    },
     addWiki() {
       this.axios
           .post('http://localhost:5000/api/wiki', {
@@ -56,7 +75,9 @@ export default {
     }
   },
   watch: {
-    wikiName(newWikiName) {
+    wikiName(newWikiName, prevWikiName) {
+      if (newWikiName.length === prevWikiName.length) return
+
       this.axios.get(`http://localhost:5000/api/wiki?name=${newWikiName}`)
                 .then(response => {
                   this.wikiBody = response.data.body;
@@ -96,7 +117,7 @@ export default {
   display: block;
   margin: auto;
   padding-top: 1em;
-  width: 20em;
+  width: 30em;
 }
 
 #wiki-input {
