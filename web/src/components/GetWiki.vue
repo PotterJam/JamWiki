@@ -76,12 +76,24 @@ export default {
   },
   watch: {
     wikiName(newWikiName, prevWikiName) {
-      if (newWikiName.length === prevWikiName.length) return
+      if (newWikiName === prevWikiName) return
 
-      this.axios.get(`http://localhost:5000/api/wiki?name=${newWikiName}`)
-                .then(response => {
-                  this.wikiBody = response.data.body;
-                });
+      if (!this.wikiNames.includes(newWikiName)) {
+        this.axios
+            .post('http://localhost:5000/api/wiki', {
+              name: newWikiName,
+              body: '',
+              tags: 'tags'
+            }).then(() => {
+              this.wikiBody = 'Wiki added'
+              this.wikiNames.push(newWikiName);
+            });
+      } else {
+        this.axios.get(`http://localhost:5000/api/wiki?name=${newWikiName}`)
+                  .then(response => {
+                    this.wikiBody = response.data.body;
+                  });
+      }
     },
     search () {
       // Items have already been loaded
