@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <v-app>
     <div id="header">
       <div id="nav">
         <router-link to="/">Home</router-link> |
@@ -7,14 +7,10 @@
       </div>
     </div>
     <router-view/>
-  </div>
+  </v-app>
 </template>
 
-<style lang="scss">
-  @import "assets/_custom.scss";
-  @import "~bootstrap/scss/bootstrap.scss";
-  @import '~bootstrap-vue/dist/bootstrap-vue.css';
-
+<style>
   body {
     margin: 0;
   }
