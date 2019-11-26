@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
@@ -81,6 +82,22 @@ namespace WikiApi
             {
                 throw new NpgsqlException("Deleted more than one wiki, something has gone seriously wrong. ");
             };
+        }
+
+        public async Task<IEnumerable<string>> GetWikiNames()
+        {
+            NpgsqlCommand cmd = new NpgsqlCommand(@"SELECT name
+                                                             FROM wiki_page", _dbConnection);
+            
+            DbDataReader reader = await cmd.ExecuteReaderAsync();
+
+            var wikiNames = new List<string>();
+            while (reader.Read())
+            {
+                wikiNames.Add((string) reader["name"]);
+            }
+
+            return wikiNames;
         }
     }
 }

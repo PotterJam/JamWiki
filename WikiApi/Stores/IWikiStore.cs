@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace WikiApi
@@ -8,5 +9,6 @@ namespace WikiApi
         Task<Wiki> GetWikiByName(string wikiName);
         Task AddWiki(Wiki newWiki);
         Task DeleteWikiByName(string name);
+        Task<IEnumerable<string>> GetWikiNames();
     }
 }
