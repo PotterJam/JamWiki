@@ -2,12 +2,12 @@
   <div>
     <div id="wiki-input-wrapper">
       <b-form-input id="wiki-input" v-model="wikiName" placeholder="Enter wiki name..."></b-form-input>
-      <b-button v-on:click="getWiki" id="wiki-but" variant="primary">Get</b-button>
-      <b-button v-on:click="addWiki" id="wiki-but" variant="primary">Add</b-button>
-      <b-button v-on:click="deleteWiki" id="wiki-but" variant="primary">Delete</b-button>
+      <v-btn text icon color="primary" v-on:click="getWiki" id="wiki-but"><v-icon>mdi-alpha-b-circle</v-icon></v-btn>
+      <v-btn text icon color="primary" v-on:click="addWiki" id="wiki-but"><v-icon>mdi-plus</v-icon></v-btn>
+      <v-btn text icon color="primary" v-on:click="deleteWiki" id="wiki-but"><v-icon>mdi-delete</v-icon></v-btn>
     </div>
     <div id="wiki-body-wrapper">
-      <b-form-textarea v-if="wikiBody !== null" id="wiki-body" placeholder="Wiki body goes here..." rows="8" v-model="wikiBody"></b-form-textarea>
+      <v-textarea solo v-if="wikiBody !== null" label="Wiki body goes here..." rows="8" v-model="wikiBody"></v-textarea>
     </div>
   </div>
 </template>
@@ -52,13 +52,10 @@ export default {
 <style scoped>
 
 #wiki-body-wrapper {
-  display: flex;
-  justify-content: center;
+  display: block;
+  margin: auto;
   padding: 1em;
-}
-
-#wiki-body {
-  width: 27.2em;
+  width: 40em;
 }
 
 #wiki-input-wrapper {
@@ -76,6 +73,5 @@ export default {
 
 #wiki-but {
   margin: 0.2em;
-  width: 5em;
 }
 </style>
