@@ -31,9 +31,9 @@ namespace WikiApi.Controllers
         }
         
         [HttpDelete]
-        public async Task<string> RemoveWiki()
+        public async Task DeleteWiki(string name)
         {
-            throw new NotImplementedException("RemoveWiki not implemented.");
+            await _wikiStore.DeleteWikiByName(name);
         }
     }
 }

@@ -69,5 +69,18 @@ namespace WikiApi
                 throw new NpgsqlException("Added more than one wiki, something has gone seriously wrong. ");
             }
         }
+
+        public async Task DeleteWikiByName(string name)
+        {
+            NpgsqlCommand cmd = new NpgsqlCommand(@"DELETE FROM wiki_page
+                                                             WHERE name=@name", _dbConnection);
+            cmd.Parameters.AddWithValue("name", NpgsqlDbType.Text, name);
+
+            var rowsChanged = await cmd.ExecuteNonQueryAsync();
+            if (rowsChanged != 1)
+            {
+                throw new NpgsqlException("Deleted more than one wiki, something has gone seriously wrong. ");
+            };
+        }
     }
 }

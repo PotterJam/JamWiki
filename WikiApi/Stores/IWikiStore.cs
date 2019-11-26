@@ -7,5 +7,6 @@ namespace WikiApi
     {
         Task<Wiki> GetWikiByName(string wikiName);
         Task AddWiki(Wiki newWiki);
+        Task DeleteWikiByName(string name);
     }
 }
