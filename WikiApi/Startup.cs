@@ -14,10 +14,12 @@ namespace WikiApi
         {
             services.AddCors(options =>
             {
-                options.AddPolicy(MyAllowSpecificOrigins,
+                options.AddDefaultPolicy(
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:8080", "http://localhost:5000");
+                        builder.AllowAnyOrigin();
+                        builder.AllowAnyMethod();
+                        builder.AllowAnyHeader();
                     });
             });
             
@@ -35,10 +37,10 @@ namespace WikiApi
             {
                 app.UseExceptionHandler("/Error");
             }
-
+            
+            app.UseCors();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseCors(MyAllowSpecificOrigins);
 
 //            app.UseAuthentication();
 //            app.UseAuthorization();

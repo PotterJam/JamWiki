@@ -25,7 +25,7 @@ namespace WikiApi.Controllers
         [HttpPost]
         public async Task AddWiki(string name, string body, string tags)
         {
-            var tagsArr = tags.Split(",");
+            var tagsArr = tags == null ? new string[] {} : tags.Split(",");
             var newWiki = new Wiki(Guid.NewGuid(), name, body, tagsArr);
             await _wikiStore.AddWiki(newWiki);
         }
