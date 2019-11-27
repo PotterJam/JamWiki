@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WikiApi.Controllers
@@ -44,7 +46,7 @@ namespace WikiApi.Controllers
         {
             await _wikiStore.DeleteWikiByName(addWikiRequest.name);
         }
-        
+
         [HttpGet("names")]
         public async Task<IEnumerable<string>> GetWikiNames()
         {
