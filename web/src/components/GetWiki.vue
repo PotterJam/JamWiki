@@ -80,7 +80,10 @@ export default {
       this.axios
           .delete('http://localhost:5000/api/wiki', {
             data: { name: this.wikiName }
-          }).then(() => this.wikiBody = 'Wiki deleted')
+          }).then(() => {
+            this.wikiBody = 'Wiki deleted';
+            this.wikiNames = this.wikiNames.filter(x => x != this.wikiName);
+          })
     }
   },
   watch: {
