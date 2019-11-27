@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div>
     <v-row>
       <v-btn
         color="primary"
@@ -18,6 +18,8 @@
         v-if="isSignIn"
         :disabled="!isInit"
       >sign out</v-btn>
+    </v-row>
+    <v-row>
       <p>isInit: {{isInit}}</p>
       <p>isSignIn: {{isSignIn}}</p>
     </v-row>

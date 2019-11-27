@@ -1,7 +1,9 @@
 <template>
   <div class="home">
     <WikiHome msg="Welcome to Jam Wiki"/>
-    <GoogleAuth/>
+    <div id="gauth">
+      <GoogleAuth/>
+    </div>
     <GetWiki/>
   </div>
 </template>
@@ -23,5 +25,8 @@ export default {
 </script>
 
 <style scoped>
-
+  #gauth {
+    display: flex;
+    justify-content: center;
+  }
 </style>
