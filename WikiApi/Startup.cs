@@ -10,8 +10,6 @@ namespace WikiApi
 {
     public class Startup
     {
-        private const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors(options =>
