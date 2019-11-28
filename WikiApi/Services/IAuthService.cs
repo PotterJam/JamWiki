@@ -5,6 +5,6 @@ namespace WikiApi.Services
 {
     public interface IAuthService
     {
-        Task<User> Authenticate(GoogleJsonWebSignature.Payload payload);
+        Task<WikiUser> Authenticate(GoogleJsonWebSignature.Payload payload);
     }
 }

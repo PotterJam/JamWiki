@@ -24,12 +24,12 @@ namespace WikiApi.Services
             _dbConnection.Close();
         }
 
-        public async Task<User> Authenticate(GoogleJsonWebSignature.Payload payload)
+        public async Task<WikiUser> Authenticate(GoogleJsonWebSignature.Payload payload)
         {
             return await GetUser(payload);
         }
 
-        private async Task<User> GetUser(GoogleJsonWebSignature.Payload payload)
+        private async Task<WikiUser> GetUser(GoogleJsonWebSignature.Payload payload)
         {
             var cmd = new NpgsqlCommand(@"SELECT *
                                                    FROM users
@@ -41,10 +41,11 @@ namespace WikiApi.Services
             if (!reader.Read())
             {
                 // user hasn't got an account
+                reader.Close();
                 return await CreateUser(payload);
             }
 
-            return new User
+            return new WikiUser
             {
                 Id = (Guid) reader["id"],
                 Name = (string) reader["name"],
@@ -54,9 +55,9 @@ namespace WikiApi.Services
             };
         }
 
-        private async Task<User> CreateUser(GoogleJsonWebSignature.Payload payload)
+        private async Task<WikiUser> CreateUser(GoogleJsonWebSignature.Payload payload)
         {
-            var user = new User
+            var user = new WikiUser
             {
                 Id = Guid.NewGuid(),
                 Name = payload.Name,
