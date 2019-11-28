@@ -40,7 +40,7 @@ namespace WikiApi.Controllers
             try
             {
                 //SimpleLogger.Log("userView = " + userView.tokenId);
-                var payload = GoogleJsonWebSignature.ValidateAsync(userView.tokenId, new GoogleJsonWebSignature.ValidationSettings()).Result;
+                var payload = await GoogleJsonWebSignature.ValidateAsync(userView.tokenId, new GoogleJsonWebSignature.ValidationSettings());
                 var user = await _authService.Authenticate(payload);
 
                 var claims = new[]
@@ -57,6 +57,7 @@ namespace WikiApi.Controllers
                     claims,
                     expires: DateTime.Now.AddSeconds(55*60),
                     signingCredentials: creds);
+                
                 return Ok(new
                 {
                     token = new JwtSecurityTokenHandler().WriteToken(token)

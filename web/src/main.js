@@ -3,7 +3,8 @@ import App from './App.vue'
 import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import axios from 'axios'
-import vuetify from './plugins/vuetify';
+import vuetify from './plugins/vuetify'
+import store from './store'
 import GAuth from 'vue-google-oauth2'
 
 const gauthOption = {
@@ -11,6 +12,7 @@ const gauthOption = {
   scope: 'profile email',
   prompt: 'select_account'
 }
+
 Vue.use(GAuth, gauthOption)
 
 Vue.prototype.axios = axios;
@@ -18,8 +20,14 @@ Vue.prototype.axios = axios;
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false
 
+const token = localStorage.getItem('user-token')
+if (token) {
+  axios.defaults.headers.common['Authorization'] = token
+}
+
 new Vue({
   router,
   vuetify,
+  store,
   render: h => h(App)
 }).$mount('#app')
