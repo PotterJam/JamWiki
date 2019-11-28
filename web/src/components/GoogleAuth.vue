@@ -3,11 +3,6 @@
     <v-row>
       <v-btn
         color="primary"
-        @click="handleClickLogin"
-        :disabled="!isInit"
-      >get authCode</v-btn>
-      <v-btn
-        color="primary"
         @click="handleClickSignIn"
         v-if="!isSignIn"
         :disabled="!isInit"
@@ -43,6 +38,10 @@ export default {
         .then(authCode => {
           //on success
           console.log("authCode", authCode);
+          this.axios
+            .post('http://localhost:5000/api/google', {
+              tokenId: authCode
+            });
         })
         .catch(error => {
           //on fail do something
@@ -62,6 +61,10 @@ export default {
             this.$gAuth.GoogleAuth.currentUser.get().getAuthResponse()
           );
           this.isSignIn = this.$gAuth.isAuthorized;
+          this.axios
+            .post('http://localhost:5000/api/google', {
+              tokenId: GoogleUser.getAuthResponse().id_token
+            });
         })
         .catch(error => {
           //on fail do something

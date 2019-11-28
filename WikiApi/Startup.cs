@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Authentication.Google;
+﻿using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using WikiApi.Services;
 
 namespace WikiApi
 {
@@ -12,30 +14,28 @@ namespace WikiApi
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(
-                    builder =>
-                    {
-                        builder.AllowAnyOrigin();
-                        builder.AllowAnyMethod();
-                        builder.AllowAnyHeader();
-                    });
-            });
-
-            services.AddIdentity<IdentityUser, IdentityRole>(options =>
-                options.SignIn.RequireConfirmedAccount = true);
-            
-            services.AddAuthentication().AddGoogle(options =>
+            services.AddCors();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
+            services.AddAuthentication()
+                .AddJwtBearer(cfg =>
                 {
-//                    IConfigurationSection googleAuthNSection =
-//                        Configuration.GetSection("Authentication:Google");
+                    cfg.RequireHttpsMetadata = false;
+                    cfg.SaveToken = true;
 
-                    options.ClientId = "357451785008-mvk7i4sla4qdq9nh8u5uml09g5gdqt26.apps.googleusercontent.com";// googleAuthNSection["ClientId"];
-                    options.ClientSecret = "UQDtH6Fswg3Rmcjbyx5-xzrf"; // googleAuthNSection["ClientSecret"];
+                    cfg.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("jwtsecret")),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
                 });
-            
+
             services.AddTransient<IWikiStore, WikiStore>();
+            services.AddScoped<IAuthService, AuthService>();
+            
+            // TODO: move db to entity at some point
+            
             services.AddControllers();
         }
 
@@ -50,12 +50,14 @@ namespace WikiApi
                 app.UseExceptionHandler("/Error");
             }
             
-            app.UseCors();
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }

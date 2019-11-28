@@ -27,8 +27,8 @@ namespace WikiApi
 
         public async Task<Wiki> GetWikiByName(string wikiName)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand(@"SELECT *
-                                                             FROM wiki_page
+            var cmd = new NpgsqlCommand(@"SELECT *
+                                                             FROM wikis
                                                              WHERE name = @name", _dbConnection);
             cmd.Parameters.AddWithValue("name", NpgsqlDbType.Text, wikiName);
             
@@ -57,7 +57,7 @@ namespace WikiApi
 
         public async Task AddWiki(Wiki newWiki)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand(@"INSERT INTO wiki_page(id, name, body, tags)
+            NpgsqlCommand cmd = new NpgsqlCommand(@"INSERT INTO wikis(id, name, body, tags)
                                                              VALUES (@id, @name, @body, @tags)", _dbConnection);
             cmd.Parameters.AddWithValue("id", NpgsqlDbType.Uuid, newWiki.Id);
             cmd.Parameters.AddWithValue("name", NpgsqlDbType.Text, newWiki.Name);
@@ -73,7 +73,7 @@ namespace WikiApi
 
         public async Task DeleteWikiByName(string name)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand(@"DELETE FROM wiki_page
+            NpgsqlCommand cmd = new NpgsqlCommand(@"DELETE FROM wikis
                                                              WHERE name=@name", _dbConnection);
             cmd.Parameters.AddWithValue("name", NpgsqlDbType.Text, name);
 
@@ -87,7 +87,7 @@ namespace WikiApi
         public async Task<IEnumerable<string>> GetWikiNames()
         {
             NpgsqlCommand cmd = new NpgsqlCommand(@"SELECT name
-                                                             FROM wiki_page", _dbConnection);
+                                                             FROM wikis", _dbConnection);
             
             DbDataReader reader = await cmd.ExecuteReaderAsync();
 
@@ -102,7 +102,7 @@ namespace WikiApi
 
         public async Task UpdateWiki(Wiki updatedWiki)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand(@"UPDATE wiki_page SET body = @body, tags = @tags WHERE name = @name", _dbConnection);
+            NpgsqlCommand cmd = new NpgsqlCommand(@"UPDATE wikis SET body = @body, tags = @tags WHERE name = @name", _dbConnection);
             cmd.Parameters.AddWithValue("name", NpgsqlDbType.Text, updatedWiki.Name);
             cmd.Parameters.AddWithValue("body", NpgsqlDbType.Text, updatedWiki.Body);
             cmd.Parameters.AddWithValue("tags", NpgsqlDbType.Array | NpgsqlDbType.Text, updatedWiki.Tags);
