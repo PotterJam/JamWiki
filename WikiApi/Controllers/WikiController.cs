@@ -22,7 +22,7 @@ namespace WikiApi.Controllers
         [HttpGet]
         public async Task<Wiki> GetWiki(string name)
         {
-           return await _wikiStore.GetWikiByName(name);
+            return await _wikiStore.GetWikiByName(name);
         }
         
         [HttpPost]
