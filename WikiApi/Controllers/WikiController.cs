@@ -22,6 +22,7 @@ namespace WikiApi.Controllers
         [HttpGet]
         public async Task<Wiki> GetWiki(string name)
         {
+            var user = User;
             return await _wikiStore.GetWikiByName(name);
         }
         

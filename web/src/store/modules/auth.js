@@ -17,8 +17,8 @@ const actions = {
       axios.post('http://localhost:5000/api/google', {
         tokenId: googleIdToken
       }).then(resp => {
-        localStorage.setItem('user-token', resp.token)
-        axios.defaults.headers.common['Authorization'] = resp.token
+        localStorage.setItem('user-token', resp.data.token)
+        axios.defaults.headers.common['Authorization'] = resp.data.token
         commit(AUTH_SUCCESS, resp)
         resolve(resp)
       })

@@ -26,6 +26,13 @@ export default {
         throw err;
       });
     });
+
+    this.axios.interceptors.request.use(function (config) {
+    const token = localStorage.getItem('user-token')
+    config.headers.Authorization =  token;
+
+    return config;
+});
   }
 }
 </script>
