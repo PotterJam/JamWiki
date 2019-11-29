@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using Google.Apis.Auth;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.IdentityModel.Tokens;
 using WikiApi.Helpers;
 using WikiApi.Stores.User;
 
@@ -35,12 +36,10 @@ namespace WikiApi.Services
 
             var encryptedEmail = GetClaim(claims, JwtRegisteredClaimNames.Sub);
             var encryptedName = GetClaim(claims, JwtRegisteredClaimNames.GivenName);
-            var encryptedUserId = GetClaim(claims, JwtRegisteredClaimNames.NameId);
 
             return Task.FromResult(
                 new WikiUser
                 {
-                    Id = Guid.Parse(DecryptJwtClaim(encryptedUserId)),
                     Name = DecryptJwtClaim(encryptedEmail),
                     Email = DecryptJwtClaim(encryptedName)
                 });
@@ -48,7 +47,7 @@ namespace WikiApi.Services
         
         private string GetClaim(IEnumerable<Claim> claims, string type)
         {
-            var matchingClaim = claims.FirstOrDefault(x => string.Equals(x.Type, type, StringComparison.OrdinalIgnoreCase));
+            var matchingClaim = claims.FirstOrDefault(x => string.Equals(x.Properties.Values.First(), type, StringComparison.OrdinalIgnoreCase));
             return matchingClaim?.Value;
         }
 

@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WikiApi.Services;
 using WikiApi.Stores.Wikis;
 
 namespace WikiApi.Controllers
@@ -15,17 +16,19 @@ namespace WikiApi.Controllers
     public class WikiController : ControllerBase
     {
         private readonly IWikiStore _wikiStore;
+        private readonly IUserService _userService;
         
-        public WikiController(IWikiStore wikiStore)
+        public WikiController(IWikiStore wikiStore, IUserService userService)
         {
             _wikiStore = wikiStore ?? throw new ArgumentNullException(nameof(wikiStore));
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));;
         }
         
         [HttpGet]
         [Authorize]
         public async Task<Wiki> GetWiki(string name)
         {
-            var user = User;
+            var wikiUser = await _userService.GetWikiUser(User);
             return await _wikiStore.GetWikiByName(name);
         }
         

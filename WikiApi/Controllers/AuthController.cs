@@ -11,7 +11,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using WikiApi.Helpers;
 using WikiApi.Services;
-using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace WikiApi.Controllers
 {
@@ -47,7 +46,6 @@ namespace WikiApi.Controllers
                 {
                     new Claim(JwtRegisteredClaimNames.Sub, Security.Encrypt(_configuration["Auth:UserCredentials"],user.Email)),
                     new Claim(JwtRegisteredClaimNames.GivenName, Security.Encrypt(_configuration["Auth:UserCredentials"],user.Name)),
-                    new Claim(JwtRegisteredClaimNames.NameId, Security.Encrypt(_configuration["Auth:UserCredentials"],user.Id.ToString())),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
