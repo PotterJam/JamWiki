@@ -13,6 +13,8 @@ using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using WikiApi.Services;
 using WikiApi.Stores;
+using WikiApi.Stores.User;
+using WikiApi.Stores.Users;
 using WikiApi.Stores.Wikis;
 
 namespace WikiApi
@@ -55,8 +57,8 @@ namespace WikiApi
             });
 
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IUserStore, UserStore>();
             services.AddTransient<IWikiStore, WikiStore>();
-            services.AddScoped<IUserService, UserService>();
             
             // TODO: move db to entity at some point
             

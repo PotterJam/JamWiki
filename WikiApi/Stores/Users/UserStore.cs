@@ -5,10 +5,9 @@ using Google.Apis.Auth;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 using NpgsqlTypes;
-using WikiApi.Stores;
 using WikiApi.Stores.User;
 
-namespace WikiApi.Services
+namespace WikiApi.Stores.Users
 {
     public class UserStore : IUserStore
     {
