@@ -77,7 +77,7 @@ namespace WikiApi.Helpers
             {
                 // log
             }
-            return Encoding.UTF8.GetString(resultArray);
+            return UTF8Encoding.UTF8.GetString(resultArray);
         }
     }
 }
