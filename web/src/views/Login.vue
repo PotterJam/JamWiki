@@ -43,9 +43,8 @@ export default {
   methods: {
     handleClickSignIn() {
       this.$gAuth.signIn()
-        .then(googleUser =>
-          this.$store.dispatch(AUTH_REQUEST, googleUser.getAuthResponse().id_token))
-            .then(() => this.$router.push('/'))
+        .then(googleUser => this.$store.dispatch(AUTH_REQUEST, googleUser.getAuthResponse().id_token))
+        .then(() => this.$router.go('/'))
     },
     handleClickSignOut() {
        this.$gAuth.signOut()
