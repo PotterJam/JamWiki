@@ -2,6 +2,7 @@
 using System.Data.Common;
 using System.Threading.Tasks;
 using Google.Apis.Auth;
+using Microsoft.Extensions.Configuration;
 using Npgsql;
 using NpgsqlTypes;
 
@@ -9,13 +10,15 @@ namespace WikiApi.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly string postgresConStr = "Server=localhost;Port=5433;UserId=postgres;Password=darkanima;Database=wikiapi;";
- 
         private readonly NpgsqlConnection _dbConnection;
-
-        public AuthService()
+        
+        public AuthService(IConfiguration configuration)
         {
-            _dbConnection = new NpgsqlConnection(postgresConStr);
+            var dbConnectionStringBuilder = new NpgsqlConnectionStringBuilder("Server=localhost;Port=5433;UserId=jamwikiapp;Database=wikiapi;");
+            dbConnectionStringBuilder.Add("Password", configuration["DbPassword"]);
+            var dbConStr = dbConnectionStringBuilder.ToString();
+            
+            _dbConnection = new NpgsqlConnection(dbConStr);
             _dbConnection.Open();
         }
 

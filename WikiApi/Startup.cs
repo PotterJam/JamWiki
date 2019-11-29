@@ -1,10 +1,12 @@
 ﻿using System.Text;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
@@ -15,6 +17,13 @@ namespace WikiApi
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
+
+        Startup(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
@@ -33,7 +42,7 @@ namespace WikiApi
                 cfg.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("jwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecret")),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Auth:JwtSigningKey"])),
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };

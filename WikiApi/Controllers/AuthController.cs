@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Npgsql;
@@ -21,10 +22,13 @@ namespace WikiApi.Controllers
     [Route("api/[controller]")]
     public class GoogleController : Controller
     {
-        private IAuthService _authService;
+        private readonly IAuthService _authService;
 
-        public GoogleController(IAuthService authService)
+        private readonly IConfiguration _configuration;
+
+        public GoogleController(IConfiguration configuration, IAuthService authService)
         {
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
         }
         
@@ -39,17 +43,16 @@ namespace WikiApi.Controllers
         {
             try
             {
-                //SimpleLogger.Log("userView = " + userView.tokenId);
                 var payload = await GoogleJsonWebSignature.ValidateAsync(userView.tokenId, new GoogleJsonWebSignature.ValidationSettings());
                 var user = await _authService.Authenticate(payload);
 
                 var claims = new[]
                 {
-                    new Claim(JwtRegisteredClaimNames.Sub, Security.Encrypt("jwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecret",user.Email)),
+                    new Claim(JwtRegisteredClaimNames.Sub, Security.Encrypt(_configuration["Auth:JwtSigningKey"],user.Email)),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
-                var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("jwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecret"));
+                var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["Auth:JwtSigningKey"]));
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
                 var token = new JwtSecurityToken(String.Empty,

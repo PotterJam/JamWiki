@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using Google.Apis.Auth.OAuth2;
+using Microsoft.Extensions.Configuration;
 using Npgsql;
 using NpgsqlTypes;
 
@@ -11,13 +12,15 @@ namespace WikiApi
 {
     public class WikiStore : IWikiStore
     {
-        private readonly string postgresConStr = "Server=localhost;Port=5433;UserId=postgres;Password=darkanima;Database=wikiapi;";
- 
         private readonly NpgsqlConnection _dbConnection;
         
-        public WikiStore()
+        public WikiStore(IConfiguration configuration)
         {
-            _dbConnection = new NpgsqlConnection(postgresConStr);
+            var dbConnectionStringBuilder = new NpgsqlConnectionStringBuilder("Server=localhost;Port=5433;UserId=jamwikiapp;Database=wikiapi;");
+            dbConnectionStringBuilder.Add("Password", configuration["DbPassword"]);
+            var dbConStr = dbConnectionStringBuilder.ToString();
+            
+            _dbConnection = new NpgsqlConnection(dbConStr);
             _dbConnection.Open();
         }
 
