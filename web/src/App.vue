@@ -29,7 +29,7 @@ export default {
 
     this.axios.interceptors.request.use(function (config) {
     const token = localStorage.getItem('user-token')
-    config.headers.Authorization =  token;
+    config.headers.Authorization =  'Bearer ' + token;
 
     return config;
 });

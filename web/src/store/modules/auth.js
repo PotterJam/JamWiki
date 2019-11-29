@@ -17,10 +17,11 @@ const actions = {
       axios.post('http://localhost:5000/api/google', {
         tokenId: googleIdToken
       }).then(resp => {
-        localStorage.setItem('user-token', resp.data.token)
-        axios.defaults.headers.common['Authorization'] = resp.data.token
-        commit(AUTH_SUCCESS, resp)
-        resolve(resp)
+        const jwtBearer = 'Bearer ' + resp.data.token;
+        localStorage.setItem('user-token', jwtBearer);
+        axios.defaults.headers.common['Authorization'] = jwtBearer;
+        commit(AUTH_SUCCESS, resp);
+        resolve(resp);
       })
       .catch(err => {
         commit(AUTH_ERROR, err)

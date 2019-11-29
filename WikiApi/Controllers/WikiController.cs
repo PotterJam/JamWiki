@@ -10,6 +10,7 @@ namespace WikiApi.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Produces("application/json")]
+    [Authorize]
     public class WikiController : ControllerBase
     {
         private readonly IWikiStore _wikiStore;
@@ -20,6 +21,7 @@ namespace WikiApi.Controllers
         }
         
         [HttpGet]
+        [Authorize]
         public async Task<Wiki> GetWiki(string name)
         {
             var user = User;
@@ -48,6 +50,7 @@ namespace WikiApi.Controllers
             await _wikiStore.DeleteWikiByName(addWikiRequest.name);
         }
 
+        [AllowAnonymous]
         [HttpGet("names")]
         public async Task<IEnumerable<string>> GetWikiNames()
         {
