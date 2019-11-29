@@ -5,14 +5,16 @@ using Google.Apis.Auth;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 using NpgsqlTypes;
+using WikiApi.Stores;
+using WikiApi.Stores.User;
 
 namespace WikiApi.Services
 {
-    public class AuthService : IAuthService
+    public class UserStore : IUserStore
     {
         private readonly NpgsqlConnection _dbConnection;
         
-        public AuthService(IConfiguration configuration)
+        public UserStore(IConfiguration configuration)
         {
             var dbConnectionStringBuilder = new NpgsqlConnectionStringBuilder("Server=localhost;Port=5433;UserId=jamwikiapp;Database=wikiapi;");
             dbConnectionStringBuilder.Add("Password", configuration["DbPassword"]);
@@ -22,17 +24,12 @@ namespace WikiApi.Services
             _dbConnection.Open();
         }
 
-        ~AuthService()
+        ~UserStore()
         {
             _dbConnection.Close();
         }
 
-        public async Task<WikiUser> Authenticate(GoogleJsonWebSignature.Payload payload)
-        {
-            return await GetUser(payload);
-        }
-
-        private async Task<WikiUser> GetUser(GoogleJsonWebSignature.Payload payload)
+        public async Task<WikiUser> GetUser(GoogleJsonWebSignature.Payload payload)
         {
             var cmd = new NpgsqlCommand(@"SELECT *
                                                    FROM users

@@ -19,14 +19,14 @@ namespace WikiApi.Controllers
     [Route("api/[controller]")]
     public class AuthController : Controller
     {
-        private readonly IAuthService _authService;
+        private readonly IUserService _userService;
 
         private readonly IConfiguration _configuration;
 
-        public AuthController(IConfiguration configuration, IAuthService authService)
+        public AuthController(IConfiguration configuration, IUserService userService)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
         
         public class UserView
@@ -41,21 +41,23 @@ namespace WikiApi.Controllers
             try
             {
                 var payload = await GoogleJsonWebSignature.ValidateAsync(userView.tokenId, new GoogleJsonWebSignature.ValidationSettings());
-                var user = await _authService.Authenticate(payload);
+                var user = await _userService.Authenticate(payload);
 
                 var claims = new[]
                 {
-                    new Claim(JwtRegisteredClaimNames.Sub, Security.Encrypt(_configuration["Auth:JwtSigningKey"],user.Email)),
+                    new Claim(JwtRegisteredClaimNames.Sub, Security.Encrypt(_configuration["Auth:UserCredentials"],user.Email)),
+                    new Claim(JwtRegisteredClaimNames.GivenName, Security.Encrypt(_configuration["Auth:UserCredentials"],user.Name)),
+                    new Claim(JwtRegisteredClaimNames.NameId, Security.Encrypt(_configuration["Auth:UserCredentials"],user.Id.ToString())),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
                 var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["Auth:JwtSigningKey"]));
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-                var token = new JwtSecurityToken(String.Empty,
-                    String.Empty,
+                var token = new JwtSecurityToken(string.Empty,
+                    string.Empty,
                     claims,
-                    expires: DateTime.Now.AddSeconds(55*60),
+                    expires: DateTime.Now.AddSeconds(55*60*24*14),
                     signingCredentials: creds);
                 
                 return Ok(new

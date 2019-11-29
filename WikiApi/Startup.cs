@@ -12,11 +12,17 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using WikiApi.Services;
+using WikiApi.Stores;
+using WikiApi.Stores.Wikis;
 
 namespace WikiApi
 {
     public class Startup
     {
+//        configuration key names:
+//            Auth:JwtSigningKey
+//            DbPassword
+//            Auth:UserCredentials
         private readonly IConfiguration _configuration;
 
         public Startup(IConfiguration configuration)
@@ -48,8 +54,9 @@ namespace WikiApi
                 };
             });
 
+            services.AddTransient<IUserService, UserService>();
             services.AddTransient<IWikiStore, WikiStore>();
-            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUserService, UserService>();
             
             // TODO: move db to entity at some point
             

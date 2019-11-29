@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
 using System.Threading.Tasks;
-using Google.Apis.Auth.OAuth2;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 using NpgsqlTypes;
 
-namespace WikiApi
+namespace WikiApi.Stores.Wikis
 {
     public class WikiStore : IWikiStore
     {
@@ -32,8 +30,8 @@ namespace WikiApi
         public async Task<Wiki> GetWikiByName(string wikiName)
         {
             var cmd = new NpgsqlCommand(@"SELECT *
-                                                             FROM wikis
-                                                             WHERE name = @name", _dbConnection);
+                                                   FROM wikis
+                                                   WHERE name = @name", _dbConnection);
             cmd.Parameters.AddWithValue("name", NpgsqlDbType.Text, wikiName);
             
             DbDataReader reader = await cmd.ExecuteReaderAsync();
@@ -58,7 +56,7 @@ namespace WikiApi
             
             return new Wiki(wikiId, wikiName, wikiBody, wikiTags);
         }
-
+        
         public async Task AddWiki(Wiki newWiki)
         {
             NpgsqlCommand cmd = new NpgsqlCommand(@"INSERT INTO wikis(id, name, body, tags)
