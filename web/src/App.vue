@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <div id="header">
-      <div id="nav">
+      <div id="nav" v-if="this.$store.getters.isAuthenticated">
         <router-link to="/">Home</router-link> |
         <router-link to="/about">About</router-link>
       </div>

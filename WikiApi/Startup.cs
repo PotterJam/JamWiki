@@ -23,8 +23,8 @@ namespace WikiApi
     {
 //        configuration key names:
 //            Auth:JwtSigningKey
-//            DbPassword
 //            Auth:UserCredentials
+//            DbPassword
         private readonly IConfiguration _configuration;
 
         public Startup(IConfiguration configuration)

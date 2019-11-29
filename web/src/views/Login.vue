@@ -1,25 +1,30 @@
 <template>
-  <div id="gauth">
-    <div>
-    <v-row>
-      <v-btn
-        color="primary"
-        @click="handleClickSignIn"
-        v-if="!isSignIn"
-        :disabled="!isInit"
-      >sign in</v-btn>
-      <v-btn
-        color="primary"
-        @click="handleClickSignOut"
-        v-if="isSignIn"
-        :disabled="!isInit"
-      >sign out</v-btn>
-    </v-row>
-    <v-row>
-      <p>isInit: {{isInit}}</p>
-      <p>isSignIn: {{isSignIn}}</p>
-    </v-row>
-    </div>
+  <div id="loginCard">
+    <v-card
+      class="mx-auto"
+      width="200px"
+      height="230px"
+      outlined
+    >
+      <div id="loginCard">
+        <h1>JamWiki</h1>
+        <img id="jamlogo" alt="Jam Logo" src="../assets/jam-logo.png">
+        <div id="buttons">
+        <v-btn
+          color="primary"
+          @click="handleClickSignIn"
+          v-if="!this.$store.getters.isAuthenticated"
+          :disabled="!isInit"
+        >sign in</v-btn>
+        <v-btn
+          color="primary"
+          @click="handleClickSignOut"
+          v-if="this.$store.getters.isAuthenticated"
+          :disabled="!isInit"
+        >sign out</v-btn>
+        </div>
+      </div>
+    </v-card>
   </div>
 </template>
 
@@ -53,7 +58,6 @@ export default {
     let that = this;
     let checkGauthLoad = setInterval(function() {
       that.isInit = that.$gAuth.isInit;
-      that.isSignIn = that.$gAuth.isAuthorized;
       if (that.isInit) clearInterval(checkGauthLoad);
     }, 1000);
   }
@@ -61,8 +65,16 @@ export default {
 </script>
 
 <style scoped>
-  #gauth {
+  #loginCard {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
+    align-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  #buttons {
+    padding-bottom: 0.5em;
   }
 </style>

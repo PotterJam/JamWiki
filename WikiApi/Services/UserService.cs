@@ -7,7 +7,6 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 using Google.Apis.Auth;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using WikiApi.Helpers;
 using WikiApi.Stores.User;
 
