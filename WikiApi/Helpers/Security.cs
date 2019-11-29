@@ -35,7 +35,7 @@ namespace WikiApi.Helpers
                 }
                 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // log
             }
@@ -73,11 +73,11 @@ namespace WikiApi.Helpers
 
                 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // log
             }
-            return UTF8Encoding.UTF8.GetString(resultArray);
+            return Encoding.UTF8.GetString(resultArray);
         }
     }
 }

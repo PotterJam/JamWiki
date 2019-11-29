@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Npgsql;
 using WikiApi.Helpers;
 using WikiApi.Services;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
@@ -20,13 +17,13 @@ namespace WikiApi.Controllers
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
-    public class GoogleController : Controller
+    public class AuthController : Controller
     {
         private readonly IAuthService _authService;
 
         private readonly IConfiguration _configuration;
 
-        public GoogleController(IConfiguration configuration, IAuthService authService)
+        public AuthController(IConfiguration configuration, IAuthService authService)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));

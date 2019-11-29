@@ -28,11 +28,13 @@ export default {
     });
 
     this.axios.interceptors.request.use(function (config) {
-    const token = localStorage.getItem('user-token')
-    config.headers.Authorization =  'Bearer ' + token;
+      const token = localStorage.getItem('user-token')
+      if (token) {
+        config.headers.Authorization =  'Bearer ' + token;
+      }
 
-    return config;
-});
+      return config;
+    });
   }
 }
 </script>

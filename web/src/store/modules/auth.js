@@ -14,7 +14,7 @@ const actions = {
   [AUTH_REQUEST]: ({commit, dispatch}, googleIdToken) => {
     return new Promise((resolve, reject) => {
       commit(AUTH_REQUEST)
-      axios.post('http://localhost:5000/api/google', {
+      axios.post('http://localhost:5000/api/auth', {
         tokenId: googleIdToken
       }).then(resp => {
         const jwtBearer = 'Bearer ' + resp.data.token;
