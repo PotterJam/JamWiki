@@ -34,7 +34,7 @@
         </v-list-item>
       </template>
       </v-combobox>
-      <v-btn text icon color="primary" v-on:click="updateWiki" id="wiki-but"><v-icon>mdi-content-save</v-icon></v-btn>
+      <v-btn text icon color="primary" :loading= "isSavingWiki" v-on:click="updateWiki" id="wiki-but"><v-icon>mdi-content-save</v-icon></v-btn>
       <v-btn text icon color="primary" v-on:click="addWiki" id="wiki-but"><v-icon>mdi-plus</v-icon></v-btn>
       <v-btn text icon color="primary" v-on:click="deleteWiki" id="wiki-but"><v-icon>mdi-delete</v-icon></v-btn>
     </div>
@@ -62,7 +62,8 @@ export default {
       colors: ['green', 'purple', 'indigo', 'cyan', 'teal', 'orange'],
       editing: null,
       index: -1,
-      menu: false
+      menu: false,
+      isSavingWiki: false
     }
   },
   methods: {
@@ -76,12 +77,17 @@ export default {
       }
     },
     updateWiki() {
-      this.axios
+      const self = this;
+      self.isSavingWiki = true
+
+      self.axios
           .post('http://localhost:5000/api/wiki/update', {
-            name: this.wikiName,
-            body: this.wikiBody,
+            name: self.wikiName,
+            body: self.wikiBody,
             tags: 'tags'
-          });
+          }).finally(() => setTimeout(function() {
+            self.isSavingWiki = false
+          }, 250)); // this adds time so the loading works
     },
     addWiki() {
       if (this.wikiName == null || this.wikiName.length < 1)
