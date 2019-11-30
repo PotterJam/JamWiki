@@ -27,12 +27,14 @@ namespace WikiApi.Stores.Wikis
             _dbConnection.Close();
         }
 
-        public async Task<Wiki> GetWikiByName(string wikiName)
+        public async Task<Wiki> GetWikiByName(string wikiName, WikiUser wikiUser)
         {
             var cmd = new NpgsqlCommand(@"SELECT *
                                                    FROM wikis
-                                                   WHERE name = @name", _dbConnection);
+                                                   WHERE name = @name
+                                                   AND user_id = @user_id", _dbConnection);
             cmd.Parameters.AddWithValue("name", NpgsqlDbType.Text, wikiName);
+            cmd.Parameters.AddWithValue("user_id", NpgsqlDbType.Uuid, wikiUser.Id);
             
             DbDataReader reader = await cmd.ExecuteReaderAsync();
 
@@ -57,39 +59,58 @@ namespace WikiApi.Stores.Wikis
             return new Wiki(wikiId, wikiName, wikiBody, wikiTags);
         }
         
-        public async Task AddWiki(Wiki newWiki)
+        public async Task AddWiki(Wiki newWiki, WikiUser wikiUser)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand(@"INSERT INTO wikis(id, name, body, tags)
-                                                             VALUES (@id, @name, @body, @tags)", _dbConnection);
+            if (string.IsNullOrWhiteSpace(newWiki.Name))
+                return;
+
+            NpgsqlCommand cmd = new NpgsqlCommand(@"INSERT INTO wikis(id, name, body, tags, user_id)
+                                                         VALUES (@id, @name, @body, @tags, @user_id)", _dbConnection);
             cmd.Parameters.AddWithValue("id", NpgsqlDbType.Uuid, newWiki.Id);
             cmd.Parameters.AddWithValue("name", NpgsqlDbType.Text, newWiki.Name);
             cmd.Parameters.AddWithValue("body", NpgsqlDbType.Text, newWiki.Body);
             cmd.Parameters.AddWithValue("tags", NpgsqlDbType.Array | NpgsqlDbType.Text, newWiki.Tags);
+            cmd.Parameters.AddWithValue("user_id", NpgsqlDbType.Uuid, wikiUser.Id);
 
             var rowsChanged = await cmd.ExecuteNonQueryAsync();
-            if (rowsChanged != 1)
+            if (rowsChanged == 0)
+            {
+                throw new NpgsqlException("Didn't add wiki, something went wrong.");
+            }
+            
+            if (rowsChanged > 1)
             {
                 throw new NpgsqlException("Added more than one wiki, something has gone seriously wrong. ");
             }
         }
 
-        public async Task DeleteWikiByName(string name)
+        public async Task DeleteWikiByName(string name, WikiUser wikiUser)
         {
             NpgsqlCommand cmd = new NpgsqlCommand(@"DELETE FROM wikis
-                                                             WHERE name=@name", _dbConnection);
+                                                             WHERE name=@name
+                                                             AND user_id=@user_id", _dbConnection);
             cmd.Parameters.AddWithValue("name", NpgsqlDbType.Text, name);
+            cmd.Parameters.AddWithValue("user_id", NpgsqlDbType.Uuid, wikiUser.Id);
 
             var rowsChanged = await cmd.ExecuteNonQueryAsync();
-            if (rowsChanged != 1)
+            if (rowsChanged == 0)
+            {
+                throw new NpgsqlException("Didn't delete wiki, something went wrong.");
+            }
+            
+            if (rowsChanged > 1)
             {
                 throw new NpgsqlException("Deleted more than one wiki, something has gone seriously wrong. ");
-            };
+            }
         }
 
-        public async Task<IEnumerable<string>> GetWikiNames()
+        public async Task<IEnumerable<string>> GetWikiNames(WikiUser wikiUser)
         {
             NpgsqlCommand cmd = new NpgsqlCommand(@"SELECT name
-                                                             FROM wikis", _dbConnection);
+                                                             FROM wikis
+                                                             WHERE user_id=@user_id", _dbConnection);
+            
+            cmd.Parameters.AddWithValue("user_id", NpgsqlDbType.Uuid, wikiUser.Id);
             
             DbDataReader reader = await cmd.ExecuteReaderAsync();
 
@@ -102,17 +123,27 @@ namespace WikiApi.Stores.Wikis
             return wikiNames;
         }
 
-        public async Task UpdateWiki(Wiki updatedWiki)
+        public async Task UpdateWiki(Wiki updatedWiki, WikiUser wikiUser)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand(@"UPDATE wikis SET body = @body, tags = @tags WHERE name = @name", _dbConnection);
+            NpgsqlCommand cmd = new NpgsqlCommand(@"UPDATE wikis
+                                                             SET body = @body, tags = @tags
+                                                             WHERE name = @name
+                                                             AND user_id=@user_id", _dbConnection);
             cmd.Parameters.AddWithValue("name", NpgsqlDbType.Text, updatedWiki.Name);
             cmd.Parameters.AddWithValue("body", NpgsqlDbType.Text, updatedWiki.Body);
             cmd.Parameters.AddWithValue("tags", NpgsqlDbType.Array | NpgsqlDbType.Text, updatedWiki.Tags);
-
+            cmd.Parameters.AddWithValue("user_id", NpgsqlDbType.Uuid, wikiUser.Id);
+            
             var rowsChanged = await cmd.ExecuteNonQueryAsync();
-            if (rowsChanged != 1)
+            
+            if (rowsChanged == 0)
             {
-                throw new NpgsqlException("Added more than one wiki, something has gone seriously wrong. ");
+                throw new NpgsqlException("Didn't update wiki, something went wrong.");
+            }
+            
+            if (rowsChanged > 1)
+            {
+                throw new NpgsqlException("Updated more than one wiki, something has gone seriously wrong. ");
             }
         }
     }

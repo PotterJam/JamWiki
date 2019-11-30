@@ -33,14 +33,16 @@ namespace WikiApi.Services
             var identity = (ClaimsIdentity) principal.Identity;
             var claims = identity.Claims.ToList();
 
-            var encryptedEmail = GetClaim(claims, JwtRegisteredClaimNames.Sub);
+            var encryptedId = GetClaim(claims, JwtRegisteredClaimNames.Sub);
             var encryptedName = GetClaim(claims, JwtRegisteredClaimNames.GivenName);
+            var encryptedEmail = GetClaim(claims, JwtRegisteredClaimNames.Email);
 
             return Task.FromResult(
                 new WikiUser
                 {
-                    Name = DecryptJwtClaim(encryptedEmail),
-                    Email = DecryptJwtClaim(encryptedName)
+                    Id = Guid.Parse(DecryptJwtClaim(encryptedId)),
+                    Name = DecryptJwtClaim(encryptedName),
+                    Email = DecryptJwtClaim(encryptedEmail)
                 });
             }
         

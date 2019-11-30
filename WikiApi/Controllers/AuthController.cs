@@ -44,7 +44,8 @@ namespace WikiApi.Controllers
 
                 var claims = new[]
                 {
-                    new Claim(JwtRegisteredClaimNames.Sub, Security.Encrypt(_configuration["Auth:UserCredentials"],user.Email)),
+                    new Claim(JwtRegisteredClaimNames.Sub, Security.Encrypt(_configuration["Auth:UserCredentials"],user.Id.ToString())),
+                    new Claim(JwtRegisteredClaimNames.Email, Security.Encrypt(_configuration["Auth:UserCredentials"],user.Email)),
                     new Claim(JwtRegisteredClaimNames.GivenName, Security.Encrypt(_configuration["Auth:UserCredentials"],user.Name)),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };

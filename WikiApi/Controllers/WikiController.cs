@@ -25,52 +25,54 @@ namespace WikiApi.Controllers
         }
         
         [HttpGet]
-        [Authorize]
         public async Task<Wiki> GetWiki(string name)
         {
             var wikiUser = await _userService.GetWikiUser(User);
-            return await _wikiStore.GetWikiByName(name);
+            return await _wikiStore.GetWikiByName(name, wikiUser);
         }
         
         [HttpPost]
         public async Task AddWiki([FromBody] AddWikiRequest addWikiRequest)
         {
-            var tagsArr = addWikiRequest.tags == null ? new string[] {} : addWikiRequest.tags.Split(",");
-            var newWiki = new Wiki(Guid.NewGuid(), addWikiRequest.name, addWikiRequest.body, tagsArr);
-            await _wikiStore.AddWiki(newWiki);
+            var wikiUser = await _userService.GetWikiUser(User);
+            var tagsArr = addWikiRequest.Tags == null ? new string[] {} : addWikiRequest.Tags.Split(",");
+            var newWiki = new Wiki(Guid.NewGuid(), addWikiRequest.Name, addWikiRequest.Body, tagsArr);
+            await _wikiStore.AddWiki(newWiki, wikiUser);
         }
         
         [HttpPost("update")]
         public async Task UpdateWiki([FromBody] AddWikiRequest addWikiRequest)
         {
-            var tagsArr = addWikiRequest.tags == null ? new string[] {} : addWikiRequest.tags.Split(",");
-            var newWiki = new Wiki(Guid.NewGuid(), addWikiRequest.name, addWikiRequest.body, tagsArr);
-            await _wikiStore.UpdateWiki(newWiki);
+            var wikiUser = await _userService.GetWikiUser(User);
+            var tagsArr = addWikiRequest.Tags == null ? new string[] {} : addWikiRequest.Tags.Split(",");
+            var newWiki = new Wiki(Guid.NewGuid(), addWikiRequest.Name, addWikiRequest.Body, tagsArr);
+            await _wikiStore.UpdateWiki(newWiki, wikiUser);
         }
         
         [HttpDelete]
         public async Task DeleteWiki([FromBody] DeleteWikiRequest addWikiRequest)
         {
-            await _wikiStore.DeleteWikiByName(addWikiRequest.name);
+            var wikiUser = await _userService.GetWikiUser(User);
+            await _wikiStore.DeleteWikiByName(addWikiRequest.Name, wikiUser);
         }
 
-        [AllowAnonymous]
         [HttpGet("names")]
         public async Task<IEnumerable<string>> GetWikiNames()
         {
-            return await _wikiStore.GetWikiNames();
+            var wikiUser = await _userService.GetWikiUser(User);
+            return await _wikiStore.GetWikiNames(wikiUser);
         }
 
         public class AddWikiRequest
         {
-            public string name { get; set; }
-            public string body { get; set; }
-            public string tags { get; set; }
+            public string Name { get; set; }
+            public string Body { get; set; }
+            public string Tags { get; set; }
         }
         
         public class DeleteWikiRequest
         {
-            public string name { get; set; }
+            public string Name { get; set; }
         }
     }
 }
