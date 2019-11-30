@@ -22,10 +22,10 @@ const actions = {
         axios.defaults.headers.common['Authorization'] = jwtBearer;
         commit(AUTH_SUCCESS, resp);
         resolve(resp);
-      })
-      .catch(err => {
+      }).catch(err => {
         commit(AUTH_ERROR, err)
         localStorage.removeItem('user-token')
+        localStorage.setItem('failed', err)
         reject(err)
       });
     });

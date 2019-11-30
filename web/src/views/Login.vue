@@ -39,14 +39,16 @@ export default {
     };
   },
   methods: {
-    handleClickSignIn() {
-      this.$gAuth.signIn()
-        .then(googleUser => {
-          this.isLoading = true;
-          this.$store.dispatch(AUTH_REQUEST, googleUser.getAuthResponse().id_token)
-        })
-        .then(() => this.$router.go('/'))
-        .catch(() => this.isLoading = false)
+    async handleClickSignIn() {
+      try {
+        const googleUser = await this.$gAuth.signIn();
+        this.isLoading = true;
+        await this.$store.dispatch(AUTH_REQUEST, googleUser.getAuthResponse().id_token);
+        this.$router.go('/');
+      } catch (ex) {
+        this.isLoading = false
+        console.log(ex);
+      }
     }
   },
   created() {

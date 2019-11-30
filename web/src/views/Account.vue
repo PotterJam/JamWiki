@@ -38,10 +38,10 @@ export default {
     };
   },
   methods: {
-    handleClickSignOut() {
-       this.$gAuth.signOut()
-        .then(() => this.$store.dispatch(AUTH_LOGOUT))
-            .then(() => this.$router.go('/login'));
+    async handleClickSignOut() {
+      await this.$gAuth.signOut();
+      await this.$store.dispatch(AUTH_LOGOUT);
+      this.$router.go('/login');
     }
   },
   created() {
