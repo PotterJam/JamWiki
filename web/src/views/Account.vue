@@ -2,9 +2,9 @@
   <div>
     <div v-if="this.$store.getters.isAuthenticated" class="account">
       <h1>Account</h1>
-      <h3>your name</h3>
-      <h3>email</h3>
       <v-btn
+          large
+          id="signoutBut"
           color="primary"
           @click="handleClickSignOut"
           :disabled="!isInit"
@@ -51,6 +51,10 @@ export default {
 </script>
 
 <style scoped>
+  #signoutBut {
+    margin: 1em;
+  }
+
   #spinny {
     display: flex;
     justify-content: center;
