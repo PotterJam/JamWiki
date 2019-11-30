@@ -1,18 +1,26 @@
 <template>
   <div>
     <div v-if="this.$store.getters.isAuthenticated" class="account">
-      <h1>Account</h1>
-      <h3></h3>
-      <v-btn
-          large
-          id="signoutBut"
-          color="primary"
-          @click="handleClickSignOut"
-          :disabled="!isInit"
-        >
-        <v-icon left>mdi-google</v-icon>
-        sign out
-      </v-btn>
+      <h1 class="pb-5">Account</h1>
+      <v-card
+        id="accountCard"
+        class="mx-auto pa-2"
+        width="300px"
+        height="120px"
+        outlined
+      >
+        <h3> <v-icon color=secondary>mdi-email</v-icon> {{ this.userEmail }}</h3>
+        <v-btn
+            large
+            id="signoutBut"
+            color="primary"
+            @click="handleClickSignOut"
+            :disabled="!isInit"
+          >
+          <v-icon left>mdi-google</v-icon>
+          sign out
+        </v-btn>
+      </v-card>
     </div>
     <div id="spinny">
       <v-progress-circular
@@ -34,7 +42,8 @@ export default {
   name: 'Account',
   data() {
     return {
-      isInit: false
+      isInit: false,
+      userEmail: ''
     };
   },
   methods: {
@@ -48,15 +57,22 @@ export default {
     let that = this;
     let checkGauthLoad = setInterval(function() {
       that.isInit = that.$gAuth.isInit;
-      if (that.isInit) clearInterval(checkGauthLoad);
+      if (that.isInit) {
+        clearInterval(checkGauthLoad);
+        that.userEmail = that.$gAuth.GoogleAuth.currentUser.get().getBasicProfile().U3;
+      }
     }, 1000);
   }
 };
 </script>
 
 <style scoped>
-  #signoutBut {
-    margin: 1em;
+  #accountCard {
+    display: flex;
+    justify-content: space-around;
+    align-content: space-around;
+    flex-direction: column;
+    height: 100%;
   }
 
   #spinny {
