@@ -14,14 +14,9 @@
           color="primary"
           @click="handleClickSignIn"
           v-if="!this.$store.getters.isAuthenticated"
+          :loading="this.isLoading"
           :disabled="!isInit"
         >sign in</v-btn>
-        <v-btn
-          color="primary"
-          @click="handleClickSignOut"
-          v-if="this.$store.getters.isAuthenticated"
-          :disabled="!isInit"
-        >sign out</v-btn>
         </div>
       </div>
     </v-card>
@@ -29,28 +24,26 @@
 </template>
 
 <script>
-import { AUTH_REQUEST, AUTH_LOGOUT } from '../store/actions/auth'
+import { AUTH_REQUEST } from '../store/actions/auth'
 
 /* eslint-disable */
 export default {
-  name: "GoogleAuth",
+  name: 'Login',
   data() {
     return {
       isInit: false,
-      isSignIn: false
+      isLoading: false
     };
   },
   methods: {
     handleClickSignIn() {
       this.$gAuth.signIn()
-        .then(googleUser => this.$store.dispatch(AUTH_REQUEST, googleUser.getAuthResponse().id_token))
+        .then(googleUser => {
+          this.isLoading = true;
+          this.$store.dispatch(AUTH_REQUEST, googleUser.getAuthResponse().id_token)
+        })
         .then(() => this.$router.go('/'))
-    },
-    handleClickSignOut() {
-       this.$gAuth.signOut()
-        .then(() =>
-          this.$store.dispatch(AUTH_LOGOUT))
-            .then(() => this.$router.push('/login'));
+        .catch(() => this.isLoading = false)
     }
   },
   created() {
