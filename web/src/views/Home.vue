@@ -10,9 +10,9 @@
         <WikiHome msg="Welcome to Jam Wiki"/>
       </v-card>
     </v-expand-transition>
-    <div id="wiki-input-wrapper">
+    <div class="mx-auto" id="wiki-input-wrapper">
       <v-combobox
-        id="wiki-input"
+        class="pr-3"
         v-model="wikiName"
         autocomplete="off"
         :items="wikiNames"
@@ -161,16 +161,12 @@ export default {
 }
 
 #wiki-input-wrapper {
-  display: block;
-  margin: auto;
-  padding-top: 1em;
-  width: 30em;
-}
-
-#wiki-input {
-  display: flex;
-  margin: 0.2em;
-  width: 11em;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    align-content: space-around;
+    flex-direction: row;
+    width: 30em;
 }
 
 #wiki-but {
