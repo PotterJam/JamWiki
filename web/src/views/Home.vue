@@ -39,7 +39,16 @@
             label="Wiki name"
             solo
           ></v-text-field>
-          <span>ARGH</span>
+          <v-combobox
+            min-width="300"
+            v-model="createWikiModalTags"
+            :items="[]"
+            label="Add wiki tags"
+            multiple
+            chips
+            append-icon=""
+            solo
+          ></v-combobox>
           <v-card-actions id="addWikiButModal">
             <v-btn center color="green darken-1" text v-on:click="addWiki">Add wiki</v-btn>
           </v-card-actions>
@@ -76,7 +85,8 @@ export default {
       isSavingWiki: false,
       currentWikiName: null,
       addWikiDialog: false,
-      createWikiModalInput: null
+      createWikiModalInput: null,
+      createWikiModalTags: []
     }
   },
   methods: {
