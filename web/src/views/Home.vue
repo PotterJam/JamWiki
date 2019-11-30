@@ -27,7 +27,25 @@
       >
       </v-autocomplete>
       <v-btn text icon color="primary" :loading= "isSavingWiki" v-on:click="updateWiki" id="wiki-but"><v-icon>mdi-content-save</v-icon></v-btn>
-      <v-btn text icon color="primary" v-on:click="addWiki" id="wiki-but"><v-icon>mdi-plus</v-icon></v-btn>
+
+      <v-dialog v-model="addWikiDialog" max-width="300">
+        <template v-slot:activator="{ on }">
+          <v-btn text icon color="primary" v-on="on" id="wiki-but"><v-icon>mdi-plus</v-icon></v-btn>
+        </template>
+        <v-card class="pl-5 pr-5">
+          <v-card-title class="headline pb-4">Create a new wiki</v-card-title>
+          <v-text-field
+            v-model="createWikiModalInput"
+            label="Wiki name"
+            solo
+          ></v-text-field>
+          <span>ARGH</span>
+          <v-card-actions id="addWikiButModal">
+            <v-btn center color="green darken-1" text v-on:click="addWiki">Add wiki</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
       <v-btn text icon color="primary" v-on:click="deleteWiki" id="wiki-but"><v-icon>mdi-delete</v-icon></v-btn>
     </div>
     <div id="wiki-body-wrapper">
@@ -56,7 +74,9 @@ export default {
       index: -1,
       menu: false,
       isSavingWiki: false,
-      currentWikiName: null
+      currentWikiName: null,
+      addWikiDialog: false,
+      createWikiModalInput: null
     }
   },
   methods: {
@@ -83,20 +103,23 @@ export default {
           }, 250)); // this adds time so the loading works
     },
     addWiki() {
-      if (this.wikiName == null || this.wikiName.length < 1)
+      if (this.createWikiModalInput == null || this.createWikiModalInput.length < 1)
         return;
 
-      const wikiNameBeingAdded = this.wikiName;
+      const wikiNameBeingAdded = this.createWikiModalInput;
 
       this.axios
           .post('http://localhost:5000/api/wiki', {
             name: wikiNameBeingAdded,
-            body: this.wikiBody,
+            body: '',
             tags: 'tags'
           }).then(() => {
             this.wikiBody = 'Wiki added'
             this.currentWikiName = wikiNameBeingAdded;
             this.wikiNames = this.wikiNames.push(wikiNameBeingAdded);
+            this.addWikiDialog = false;
+            this.wikiName = this.createWikiModalInput;
+            this.createWikiModalInput = null;
           });
     },
     deleteWiki() {
@@ -163,4 +186,9 @@ export default {
 #wiki-but {
   margin: 0.2em;
 }
+
+#addWikiButModal {
+  justify-content: center;
+}
+
 </style>
