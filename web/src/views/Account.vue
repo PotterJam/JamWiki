@@ -2,13 +2,17 @@
   <div>
     <div v-if="this.$store.getters.isAuthenticated" class="account">
       <h1>Account</h1>
+      <h3></h3>
       <v-btn
           large
           id="signoutBut"
           color="primary"
           @click="handleClickSignOut"
           :disabled="!isInit"
-        >sign out</v-btn>
+        >
+        <v-icon left>mdi-google</v-icon>
+        sign out
+      </v-btn>
     </div>
     <div id="spinny">
       <v-progress-circular

@@ -70,8 +70,6 @@ namespace WikiApi.Helpers
                     ICryptoTransform cTransform = tdes.CreateDecryptor();
                     resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
                 }
-
-                
             }
             catch (Exception)
             {

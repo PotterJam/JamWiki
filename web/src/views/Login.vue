@@ -16,7 +16,10 @@
           v-if="!this.$store.getters.isAuthenticated"
           :loading="this.isLoading"
           :disabled="!isInit"
-        >sign in</v-btn>
+        >
+          <v-icon left>mdi-google</v-icon>
+          sign in
+        </v-btn>
         </div>
       </div>
     </v-card>
