@@ -25,7 +25,7 @@
         prepend-icon="mdi-magnify"
       >
         <template v-slot:no-data>
-        <v-list-item>
+        <v-list-item v-if="search !== null && search.length < 1">
           <v-list-item-content>
             <v-list-item-title>
               No results matching "<strong>{{ search }}</strong>". Press <kbd>enter</kbd> to create a new one
@@ -84,6 +84,9 @@ export default {
           });
     },
     addWiki() {
+      if (this.wikiName == null || this.wikiName.length < 1)
+        return;
+
       this.axios
           .post('http://localhost:5000/api/wiki', {
             name: this.wikiName,
@@ -104,6 +107,7 @@ export default {
   watch: {
     wikiName(newWikiName, prevWikiName) {
       if (newWikiName === prevWikiName) return
+      if (newWikiName == null || newWikiName.length < 1) return
 
       if (!this.wikiNames.includes(newWikiName)) {
         this.axios
