@@ -11,7 +11,7 @@
       </v-card>
     </v-expand-transition>
     <div class="mx-auto" id="wiki-input-wrapper">
-      <v-combobox
+      <v-autocomplete
         class="pr-3"
         v-model="wikiName"
         autocomplete="off"
@@ -19,21 +19,13 @@
         :loading="isLoading"
         :search-input.sync="search"
         hide-selected
+        hide-no-data
         color="secondary"
         label="Wikis"
         placeholder="Start typing to Search"
         prepend-icon="mdi-magnify"
       >
-        <template v-slot:no-data>
-        <v-list-item v-if="search !== null && search.length < 1">
-          <v-list-item-content>
-            <v-list-item-title>
-              No results matching "<strong>{{ search }}</strong>". Press <kbd>enter</kbd> to create a new one
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </template>
-      </v-combobox>
+      </v-autocomplete>
       <v-btn text icon color="primary" :loading= "isSavingWiki" v-on:click="updateWiki" id="wiki-but"><v-icon>mdi-content-save</v-icon></v-btn>
       <v-btn text icon color="primary" v-on:click="addWiki" id="wiki-but"><v-icon>mdi-plus</v-icon></v-btn>
       <v-btn text icon color="primary" v-on:click="deleteWiki" id="wiki-but"><v-icon>mdi-delete</v-icon></v-btn>
@@ -63,7 +55,8 @@ export default {
       editing: null,
       index: -1,
       menu: false,
-      isSavingWiki: false
+      isSavingWiki: false,
+      currentWikiName: null
     }
   },
   methods: {
@@ -82,7 +75,7 @@ export default {
 
       self.axios
           .post('http://localhost:5000/api/wiki/update', {
-            name: self.wikiName,
+            name: self.currentWikiName,
             body: self.wikiBody,
             tags: 'tags'
           }).finally(() => setTimeout(function() {
@@ -93,20 +86,27 @@ export default {
       if (this.wikiName == null || this.wikiName.length < 1)
         return;
 
+      const wikiNameBeingAdded = this.wikiName;
+
       this.axios
           .post('http://localhost:5000/api/wiki', {
-            name: this.wikiName,
+            name: wikiNameBeingAdded,
             body: this.wikiBody,
             tags: 'tags'
-          }).then(() => this.wikiBody = 'Wiki added');
+          }).then(() => {
+            this.wikiBody = 'Wiki added'
+            this.currentWikiName = wikiNameBeingAdded;
+            this.wikiNames = this.wikiNames.push(wikiNameBeingAdded);
+          });
     },
     deleteWiki() {
       this.axios
           .delete('http://localhost:5000/api/wiki', {
-            data: { name: this.wikiName }
+            data: { name: this.currentWikiName }
           }).then(() => {
             this.wikiBody = 'Wiki deleted';
-            this.wikiNames = this.wikiNames.filter(x => x != this.wikiName);
+            this.currentWikiName = null;
+            this.wikiNames = this.wikiNames.filter(x => x != this.currentWikiName);
           })
     }
   },
@@ -115,21 +115,12 @@ export default {
       if (newWikiName === prevWikiName) return
       if (newWikiName == null || newWikiName.length < 1) return
 
-      if (!this.wikiNames.includes(newWikiName)) {
-        this.axios
-            .post('http://localhost:5000/api/wiki', {
-              name: newWikiName,
-              body: '',
-              tags: 'tags'
-            }).then(() => {
-              this.wikiBody = 'Wiki added'
-              this.wikiNames.push(newWikiName);
-            });
-      } else {
+      if (this.wikiNames.includes(newWikiName)) {
         this.axios.get(`http://localhost:5000/api/wiki?name=${newWikiName}`)
-                  .then(response => {
-                    this.wikiBody = response.data.body;
-                  });
+        .then(response => {
+          this.wikiBody = response.data.body;
+          this.currentWikiName = response.data.name;
+        });
       }
     },
     search () {
