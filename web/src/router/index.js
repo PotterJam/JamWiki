@@ -38,6 +38,12 @@ const routes = [
     name: 'Account',
     component: () => import('../views/Account.vue'),
     beforeEnter: ifAuthenticated
+  },
+  {
+    path: '/wikiswithtag/:tagName',
+    name: 'WikisWithTag',
+    component: () => import('../views/WikisWithTag.vue'),
+    beforeEnter: ifAuthenticated
   }
 ]
 

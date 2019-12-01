@@ -3,7 +3,8 @@
     <div id="header">
       <div id="nav" v-if="this.$store.getters.isAuthenticated">
         <router-link to="/">Home</router-link> |
-        <router-link to="/account">Account</router-link>
+        <router-link to="/account">Account</router-link> |
+        <router-link to="/wikiswithtag">Tags</router-link>
       </div>
     </div>
     <router-view/>
