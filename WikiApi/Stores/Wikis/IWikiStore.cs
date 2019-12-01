@@ -10,5 +10,6 @@ namespace WikiApi.Stores.Wikis
         Task DeleteWikiByName(string name, WikiUser wikiUser);
         Task<IEnumerable<string>> GetWikiNames(WikiUser wikiUser);
         Task UpdateWiki(Wiki updatedWiki, WikiUser wikiUser);
+        Task<IEnumerable<string>> GetAllWikiTags(WikiUser wikiUser);
     }
 }

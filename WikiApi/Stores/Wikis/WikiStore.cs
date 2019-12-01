@@ -143,5 +143,30 @@ namespace WikiApi.Stores.Wikis
                 throw new NpgsqlException("Updated more than one wiki, something has gone seriously wrong. ");
             }
         }
+
+        public async Task<IEnumerable<string>> GetAllWikiTags(WikiUser wikiUser)
+        {
+            NpgsqlCommand cmd = new NpgsqlCommand(@"select array_agg(c) tags
+                                                             FROM (
+                                                                 SELECT unnest(tags)
+                                                                 FROM wikis
+                                                             ) AS dt(c)
+                                                             WHERE user_id=@user_id", _dbConnection);
+            
+            cmd.Parameters.AddWithValue("user_id", NpgsqlDbType.Uuid, wikiUser.Id);
+            
+            DbDataReader reader = await cmd.ExecuteReaderAsync();
+
+            if (!reader.Read())
+            {
+                return null;
+            }
+            
+            var wikiTagsFromDb = reader["tags"];
+            var wikiTags = wikiTagsFromDb is DBNull ? Enumerable.Empty<string>() : (string[]) wikiTagsFromDb;
+
+            // TODO: handle casing
+            return wikiTags.Distinct();
+        }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -60,7 +59,14 @@ namespace WikiApi.Controllers
             var wikiUser = await _userService.GetWikiUser(User);
             return await _wikiStore.GetWikiNames(wikiUser);
         }
-
+        
+        [HttpGet("tags")]
+        public async Task<IEnumerable<string>> GetWikiTags()
+        {
+            var wikiUser = await _userService.GetWikiUser(User);
+            return await _wikiStore.GetAllWikiTags(wikiUser);
+        }
+        
         public class AddWikiRequest
         {
             public string Name { get; set; }
