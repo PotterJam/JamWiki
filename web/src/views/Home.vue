@@ -57,8 +57,20 @@
 
       <v-btn text icon color="primary" v-on:click="deleteWiki" id="wiki-but"><v-icon>mdi-delete</v-icon></v-btn>
     </div>
+
     <div id="wiki-body-wrapper">
       <v-textarea solo v-if="wikiBody !== null" label="Wiki body goes here..." rows="30" v-model="wikiBody"></v-textarea>
+      <v-combobox
+        v-if="createWikiModalTags.length > 0"
+        width="40em"
+        v-model="createWikiModalTags"
+        :items="[]"
+        label="Add wiki tags"
+        multiple
+        chips
+        append-icon=""
+        solo
+      ></v-combobox>
     </div>
   </div>
 </template>
