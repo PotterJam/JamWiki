@@ -159,6 +159,7 @@ export default {
             this.wikiName = this.createWikiModalInput;
             this.createWikiModalInput = null;
             this.wikiTags = this.createWikiModalTags;
+            this.createWikiModalTags = [];
           });
     },
     deleteWiki() {
