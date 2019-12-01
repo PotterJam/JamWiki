@@ -35,8 +35,7 @@ namespace WikiApi.Controllers
         public async Task AddWiki([FromBody] AddWikiRequest addWikiRequest)
         {
             var wikiUser = await _userService.GetWikiUser(User);
-            var tagsArr = addWikiRequest.Tags == null ? new string[] {} : addWikiRequest.Tags.Split(",");
-            var newWiki = new Wiki(Guid.NewGuid(), addWikiRequest.Name, addWikiRequest.Body, tagsArr);
+            var newWiki = new Wiki(Guid.NewGuid(), addWikiRequest.Name, addWikiRequest.Body, addWikiRequest.Tags);
             await _wikiStore.AddWiki(newWiki, wikiUser);
         }
         
@@ -44,8 +43,7 @@ namespace WikiApi.Controllers
         public async Task UpdateWiki([FromBody] AddWikiRequest addWikiRequest)
         {
             var wikiUser = await _userService.GetWikiUser(User);
-            var tagsArr = addWikiRequest.Tags == null ? new string[] {} : addWikiRequest.Tags.Split(",");
-            var newWiki = new Wiki(Guid.NewGuid(), addWikiRequest.Name, addWikiRequest.Body, tagsArr);
+            var newWiki = new Wiki(Guid.NewGuid(), addWikiRequest.Name, addWikiRequest.Body, addWikiRequest.Tags);
             await _wikiStore.UpdateWiki(newWiki, wikiUser);
         }
         
@@ -67,7 +65,7 @@ namespace WikiApi.Controllers
         {
             public string Name { get; set; }
             public string Body { get; set; }
-            public string Tags { get; set; }
+            public IEnumerable<string> Tags { get; set; }
         }
         
         public class DeleteWikiRequest

@@ -17,7 +17,6 @@
         autocomplete="off"
         :items="wikiNames"
         :loading="isLoading"
-        :search-input.sync="search"
         hide-selected
         hide-no-data
         color="secondary"
@@ -58,20 +57,23 @@
       <v-btn text icon color="primary" v-on:click="deleteWiki" id="wiki-but"><v-icon>mdi-delete</v-icon></v-btn>
     </div>
 
-    <div id="wiki-body-wrapper">
-      <v-textarea solo v-if="wikiBody !== null" label="Wiki body goes here..." rows="30" v-model="wikiBody"></v-textarea>
-      <v-combobox
-        v-if="createWikiModalTags.length > 0"
-        width="40em"
-        v-model="createWikiModalTags"
-        :items="[]"
-        label="Add wiki tags"
-        multiple
-        chips
-        append-icon=""
-        solo
-      ></v-combobox>
-    </div>
+    <v-expand-transition>
+      <div v-show="wikiBody !== null" class="mx-auto" id="wiki-body-wrapper">
+        <div id="wiki-body">
+          <v-textarea solo label="Wiki body goes here..." rows="37" v-model="wikiBody"></v-textarea>
+          <v-combobox
+              min-width="300"
+              v-model="wikiTags"
+              :items="[]"
+              label="Add wiki tags"
+              multiple
+              chips
+              append-icon=""
+              solo
+            ></v-combobox>
+        </div>
+      </div>
+    </v-expand-transition>
   </div>
 </template>
 
@@ -87,6 +89,7 @@ export default {
     return {
       wikiName: null,
       wikiBody: null,
+      wikiTags: [],
       wikiNames: [],
       isLoading: false,
       search: null,
@@ -100,6 +103,17 @@ export default {
       createWikiModalInput: null,
       createWikiModalTags: []
     }
+  },
+  created() {
+    if (this.isLoading)
+      return
+    this.isLoading = true
+
+    this.axios
+      .get(`http://localhost:5000/api/wiki/names`)
+      .then(response => this.wikiNames = response.data)
+      .catch(err => console.log(err))
+      .finally(() => this.isLoading = false)
   },
   methods: {
     edit(index, item) {
@@ -119,13 +133,15 @@ export default {
           .post('http://localhost:5000/api/wiki/update', {
             name: self.currentWikiName,
             body: self.wikiBody,
-            tags: 'tags'
+            tags: self.wikiTags
           }).finally(() => setTimeout(function() {
             self.isSavingWiki = false
           }, 250)); // this adds time so the loading works
     },
     addWiki() {
-      if (this.createWikiModalInput == null || this.createWikiModalInput.length < 1)
+      if (this.createWikiModalInput == null 
+        || this.createWikiModalInput.length < 1
+        || this.wikiNames.includes(this.createWikiModalInput))
         return;
 
       const wikiNameBeingAdded = this.createWikiModalInput;
@@ -134,14 +150,15 @@ export default {
           .post('http://localhost:5000/api/wiki', {
             name: wikiNameBeingAdded,
             body: '',
-            tags: 'tags'
+            tags: this.createWikiModalTags
           }).then(() => {
             this.wikiBody = 'Wiki added'
             this.currentWikiName = wikiNameBeingAdded;
-            this.wikiNames = this.wikiNames.push(wikiNameBeingAdded);
+            this.wikiNames.push(wikiNameBeingAdded);
             this.addWikiDialog = false;
             this.wikiName = this.createWikiModalInput;
             this.createWikiModalInput = null;
+            this.wikiTags = this.createWikiModalTags;
           });
     },
     deleteWiki() {
@@ -165,24 +182,10 @@ export default {
         .then(response => {
           this.wikiBody = response.data.body;
           this.currentWikiName = response.data.name;
+          this.wikiTags = response.data.tags;
         });
       }
-    },
-    search () {
-      // Items have already been loaded
-      if (this.wikiNames.length > 0) return
-      // Items have already been requested
-      if (this.isLoading) return
-      this.isLoading = true
-      // Lazily load input items
-      this.axios
-        .get(`http://localhost:5000/api/wiki/names`)
-        .then(response => this.wikiNames = response.data)
-        .catch(err => {
-          console.log(err)
-        })
-        .finally(() => this.isLoading = false)
-    },
+    }
   }
 }
 </script>
@@ -190,10 +193,14 @@ export default {
 <style scoped>
 
 #wiki-body-wrapper {
-  display: block;
-  margin: auto;
   padding: 1em;
   width: 40em;
+}
+
+#wiki-body {
+  display: flex;
+  flex-direction: column;
+  align-content: center
 }
 
 #wiki-input-wrapper {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace WikiApi
 {
@@ -7,9 +8,9 @@ namespace WikiApi
         public Guid Id { get; }
         public string Name { get; }
         public string Body { get; }
-        public string[] Tags { get; }
+        public IEnumerable<string> Tags { get; }
 
-        public Wiki(Guid id, string name, string body, string[] tags)
+        public Wiki(Guid id, string name, string body, IEnumerable<string> tags)
         {
             Id = id;
             Name = name;

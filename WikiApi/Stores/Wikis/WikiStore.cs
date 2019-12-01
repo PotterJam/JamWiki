@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
@@ -48,11 +49,7 @@ namespace WikiApi.Stores.Wikis
             var wikiBody = (string) reader["body"];
 
             var tagsFromReader = reader["tags"];
-            var wikiTags = new string[] { };
-            if (!(tagsFromReader is DBNull))
-            {
-                wikiTags = (string[]) tagsFromReader;
-            }
+            var wikiTags = tagsFromReader is DBNull ? Enumerable.Empty<string>() : (string[]) tagsFromReader;
 
             // TODO: make sure wiki name is unique (set in db table)
             
