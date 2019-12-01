@@ -30,6 +30,13 @@ namespace WikiApi.Controllers
             return await _wikiStore.GetWikiByName(name, wikiUser);
         }
         
+        [HttpGet("with-tag")]
+        public async Task<IEnumerable<Wiki>> GetWikiWithTag(string tag)
+        {
+            var wikiUser = await _userService.GetWikiUser(User);
+            return await _wikiStore.GetWikisWithTag(tag, wikiUser);
+        }
+        
         [HttpPost]
         public async Task AddWiki([FromBody] AddWikiRequest addWikiRequest)
         {

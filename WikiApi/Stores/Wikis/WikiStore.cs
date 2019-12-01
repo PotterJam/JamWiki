@@ -34,9 +34,10 @@ namespace WikiApi.Stores.Wikis
                                                    FROM wikis
                                                    WHERE name = @name
                                                    AND user_id = @user_id", _dbConnection);
-            cmd.Parameters.AddWithValue("name", NpgsqlDbType.Text, wikiName);
-            cmd.Parameters.AddWithValue("user_id", NpgsqlDbType.Uuid, wikiUser.Id);
             
+            cmd.Parameters.AddWithValue("user_id", NpgsqlDbType.Uuid, wikiUser.Id);
+            cmd.Parameters.AddWithValue("name", NpgsqlDbType.Text, wikiName);
+
             DbDataReader reader = await cmd.ExecuteReaderAsync();
 
             if (!reader.Read())
@@ -55,7 +56,36 @@ namespace WikiApi.Stores.Wikis
             
             return new Wiki(wikiId, wikiName, wikiBody, wikiTags);
         }
-        
+
+        public async Task<IEnumerable<Wiki>> GetWikisWithTag(string tag, WikiUser wikiUser)
+        {
+            var cmd = new NpgsqlCommand(@"SELECT *
+                                                   FROM wikis
+                                                   WHERE @tag = ANY(tags)
+                                                   AND user_id = @user_id", _dbConnection);
+            
+            cmd.Parameters.AddWithValue("user_id", NpgsqlDbType.Uuid, wikiUser.Id);
+            cmd.Parameters.AddWithValue("tag", NpgsqlDbType.Text, tag);
+            
+            DbDataReader reader = await cmd.ExecuteReaderAsync();
+
+            var wikis = new List<Wiki>();
+
+            while (reader.Read())
+            {
+                var wikiId = (Guid) reader["id"];
+                var wikiName = (string) reader["name"];
+                var wikiBody = (string) reader["body"];
+                
+                var tagsFromReader = reader["tags"];
+                var wikiTags = tagsFromReader is DBNull ? Enumerable.Empty<string>() : (string[]) tagsFromReader;
+
+                // TODO: make sure wiki name is unique (set in db table)
+                wikis.Add(new Wiki(wikiId, wikiName, wikiBody, wikiTags));
+            }
+            return wikis;
+        }
+
         public async Task AddWiki(Wiki newWiki, WikiUser wikiUser)
         {
             if (string.IsNullOrWhiteSpace(newWiki.Name))
