@@ -180,8 +180,8 @@ namespace WikiApi.Stores.Wikis
                                                              FROM (
                                                                  SELECT unnest(tags)
                                                                  FROM wikis
-                                                             ) AS dt(c)
-                                                             WHERE user_id=@user_id", _dbConnection);
+                                                                 WHERE user_id=@user_id
+                                                             ) AS dt(c)", _dbConnection);
             
             cmd.Parameters.AddWithValue("user_id", NpgsqlDbType.Uuid, wikiUser.Id);
             
