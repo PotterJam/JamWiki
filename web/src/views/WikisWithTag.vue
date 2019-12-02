@@ -4,6 +4,7 @@
 
 <script>
 export default {
+    name: 'WikiTags',
     data () {
         return {
             tagName: null
