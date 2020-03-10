@@ -16,7 +16,7 @@ export default {
         }
     },
     created() {
-        this.axios.get(`http://localhost:5000/api/wiki/tags`)
+        this.axios.get(`/api/wiki/tags`)
         .then(response => {
             this.tags = response.data
         });

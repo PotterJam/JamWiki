@@ -110,7 +110,7 @@ export default {
     this.isLoading = true
 
     this.axios
-      .get(`http://localhost:5000/api/wiki/names`)
+      .get(`/api/wiki/names`)
       .then(response => this.wikiNames = response.data)
       .catch(err => console.log(err))
       .finally(() => this.isLoading = false)
@@ -130,7 +130,7 @@ export default {
       self.isSavingWiki = true
 
       self.axios
-          .post('http://localhost:5000/api/wiki/update', {
+          .post('/api/wiki/update', {
             name: self.currentWikiName,
             body: self.wikiBody,
             tags: self.wikiTags
@@ -147,7 +147,7 @@ export default {
       const wikiNameBeingAdded = this.createWikiModalInput;
 
       this.axios
-          .post('http://localhost:5000/api/wiki', {
+          .post('/api/wiki', {
             name: wikiNameBeingAdded,
             body: '',
             tags: this.createWikiModalTags
@@ -164,7 +164,7 @@ export default {
     },
     deleteWiki() {
       this.axios
-          .delete('http://localhost:5000/api/wiki', {
+          .delete('/api/wiki', {
             data: { name: this.currentWikiName }
           }).then(() => {
             this.wikiBody = 'Wiki deleted';
@@ -179,7 +179,7 @@ export default {
       if (newWikiName == null || newWikiName.length < 1) return
 
       if (this.wikiNames.includes(newWikiName)) {
-        this.axios.get(`http://localhost:5000/api/wiki?name=${newWikiName}`)
+        this.axios.get(`/api/wiki?name=${newWikiName}`)
         .then(response => {
           this.wikiBody = response.data.body;
           this.currentWikiName = response.data.name;
