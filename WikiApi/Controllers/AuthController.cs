@@ -20,11 +20,11 @@ namespace WikiApi.Controllers
     {
         private readonly IUserService _userService;
 
-        private readonly IConfiguration _configuration;
+        private readonly SecurityConfiguration _securityConfiguration;
 
-        public AuthController(IConfiguration configuration, IUserService userService)
+        public AuthController(SecurityConfiguration securityConfiguration, IUserService userService)
         {
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _securityConfiguration = securityConfiguration ?? throw new ArgumentNullException(nameof(securityConfiguration));
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
         
@@ -44,20 +44,20 @@ namespace WikiApi.Controllers
 
                 var claims = new[]
                 {
-                    new Claim(JwtRegisteredClaimNames.Sub, Security.Encrypt(_configuration["Auth:UserCredentials"],user.Id.ToString())),
-                    new Claim(JwtRegisteredClaimNames.Email, Security.Encrypt(_configuration["Auth:UserCredentials"],user.Email)),
-                    new Claim(JwtRegisteredClaimNames.GivenName, Security.Encrypt(_configuration["Auth:UserCredentials"],user.Name)),
+                    new Claim(JwtRegisteredClaimNames.Sub, Security.Encrypt(_securityConfiguration.UserCredentialKey,user.Id.ToString())),
+                    new Claim(JwtRegisteredClaimNames.Email, Security.Encrypt(_securityConfiguration.UserCredentialKey,user.Email)),
+                    new Claim(JwtRegisteredClaimNames.GivenName, Security.Encrypt(_securityConfiguration.UserCredentialKey,user.Name)),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
-                var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["Auth:JwtSigningKey"]));
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_securityConfiguration.JwtSigningKey));
+                var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
                 var token = new JwtSecurityToken(string.Empty,
                     string.Empty,
                     claims,
                     expires: DateTime.Now.AddSeconds(55*60*24*14),
-                    signingCredentials: creds);
+                    signingCredentials: credentials);
                 
                 return Ok(new
                 {

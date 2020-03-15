@@ -2,7 +2,6 @@
 using System.Data.Common;
 using System.Threading.Tasks;
 using Google.Apis.Auth;
-using Microsoft.Extensions.Configuration;
 using Npgsql;
 using NpgsqlTypes;
 using WikiApi.Stores.User;
@@ -13,10 +12,10 @@ namespace WikiApi.Stores.Users
     {
         private readonly NpgsqlConnection _dbConnection;
         
-        public UserStore(IConfiguration configuration)
+        public UserStore(PostgresConfiguration postgresConfiguration)
         {
             var dbConnectionStringBuilder = new NpgsqlConnectionStringBuilder("Server=localhost;Port=5433;UserId=jamwikiapp;Database=wikiapi;");
-            dbConnectionStringBuilder.Add("Password", configuration["DbPassword"]);
+            dbConnectionStringBuilder.Add("Password", postgresConfiguration.Password);
             var dbConStr = dbConnectionStringBuilder.ToString();
             
             _dbConnection = new NpgsqlConnection(dbConStr);

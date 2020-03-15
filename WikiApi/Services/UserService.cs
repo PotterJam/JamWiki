@@ -6,7 +6,6 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using Google.Apis.Auth;
-using Microsoft.Extensions.Configuration;
 using WikiApi.Helpers;
 using WikiApi.Stores.User;
 
@@ -14,13 +13,13 @@ namespace WikiApi.Services
 {
     public class UserService : IUserService
     {
-        private readonly IConfiguration _configuration;
+        private readonly SecurityConfiguration _securityConfiguration;
         private readonly IUserStore _userStore;
 
-        public UserService(IUserStore userStore, IConfiguration configuration)
+        public UserService(IUserStore userStore, SecurityConfiguration securityConfiguration)
         {
             _userStore = userStore ?? throw new ArgumentNullException(nameof(userStore));
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));;
+            _securityConfiguration = securityConfiguration ?? throw new ArgumentNullException(nameof(securityConfiguration));;
         }
 
         public async Task<WikiUser> Authenticate(GoogleJsonWebSignature.Payload payload)
@@ -53,6 +52,6 @@ namespace WikiApi.Services
         }
 
         private string DecryptJwtClaim(string encryptedClaim) =>
-            Security.Decrypt(_configuration["Auth:UserCredentials"], encryptedClaim);
+            Security.Decrypt(_securityConfiguration.UserCredentialKey, encryptedClaim);
     }
 }

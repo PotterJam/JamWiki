@@ -21,17 +21,29 @@ namespace WikiApi
 {
     public class Startup
     {
-//        configuration key names:
-//            Auth:JwtSigningKey
-//            Auth:UserCredentials
-//            DbPassword
-        private readonly IConfiguration _configuration;
-
-        public Startup(IConfiguration configuration)
+        private IConfigurationRoot Configuration { get; }
+        
+        public Startup()
         {
-            _configuration = configuration;
+            var builder = new ConfigurationBuilder().AddEnvironmentVariables();
+            Configuration = builder.Build();
         }
         
+        private PostgresConfiguration PostgresConfiguration => new PostgresConfiguration
+        {
+            DbName = Configuration.GetValue<string>("DB_NAME"),
+            Host = Configuration.GetValue<string>("DB_HOST"),
+            Port = Configuration.GetValue<int>("DB_PORT"),
+            Username = Configuration.GetValue<string>("DB_USER_NAME"),
+            Password = Configuration.GetValue<string>("DB_PASSWORD"),
+        };
+        
+        private SecurityConfiguration SecurityConfiguration => new SecurityConfiguration
+        {
+            JwtSigningKey = Configuration.GetValue<string>("JWT_SIGNING_KEY"),
+            UserCredentialKey = Configuration.GetValue<string>("USER_CREDENTIALS_KEY")
+        };
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
@@ -50,18 +62,19 @@ namespace WikiApi
                 cfg.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Auth:JwtSigningKey"])),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecurityConfiguration.JwtSigningKey)),
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
             });
 
+            services.AddSingleton(PostgresConfiguration);
+            services.AddSingleton(SecurityConfiguration);
+
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserStore, UserStore>();
             services.AddTransient<IWikiStore, WikiStore>();
-            
-            // TODO: move db to entity at some point
-            
+
             services.AddControllers();
         }
 
