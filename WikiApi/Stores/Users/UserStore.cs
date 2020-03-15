@@ -10,31 +10,36 @@ namespace WikiApi.Stores.Users
 {
     public class UserStore : IUserStore
     {
-        private readonly NpgsqlConnection _dbConnection;
+        private readonly string m_ConnectionString;
         
         public UserStore(PostgresConfiguration postgresConfiguration)
         {
-            var dbConnectionStringBuilder = new NpgsqlConnectionStringBuilder("Server=localhost;Port=5433;UserId=jamwikiapp;Database=wikiapi;");
-            dbConnectionStringBuilder.Add("Password", postgresConfiguration.Password);
-            var dbConStr = dbConnectionStringBuilder.ToString();
+            var connectionStrBuilder = new NpgsqlConnectionStringBuilder
+            {
+                Database = postgresConfiguration.Database,
+                Host = postgresConfiguration.Host,
+                Port = postgresConfiguration.Port,
+                Username = postgresConfiguration.Username,
+                Password = postgresConfiguration.Password
+            };
             
-            _dbConnection = new NpgsqlConnection(dbConStr);
-            _dbConnection.Open();
+            m_ConnectionString = connectionStrBuilder.ToString();
         }
-
-        ~UserStore()
-        {
-            _dbConnection.Close();
-        }
-
+        
         public async Task<WikiUser> GetUser(GoogleJsonWebSignature.Payload payload)
         {
-            var cmd = new NpgsqlCommand(@"SELECT *
-                                                   FROM users
-                                                   WHERE email = @email", _dbConnection);
+            await using var conn = new NpgsqlConnection(m_ConnectionString);
+            await conn.OpenAsync();
+
+            await using var cmd = conn.CreateCommand();
+            
+            cmd.CommandText = @"SELECT *
+                                FROM users
+                                WHERE email = @email;";
+            
             cmd.Parameters.AddWithValue("email", NpgsqlDbType.Text, payload.Email);
             
-            DbDataReader reader = await cmd.ExecuteReaderAsync();
+            await using var reader = await cmd.ExecuteReaderAsync();
 
             if (!reader.Read())
             {
@@ -64,8 +69,14 @@ namespace WikiApi.Stores.Users
                 Issuer = payload.Issuer
             };
 
-            NpgsqlCommand cmd = new NpgsqlCommand(@"INSERT INTO users(id, name, email, subject, issuer)
-                                                             VALUES (@id, @name, @email, @subject, @issuer)", _dbConnection);
+            await using var conn = new NpgsqlConnection(m_ConnectionString);
+            await conn.OpenAsync();
+
+            await using var cmd = conn.CreateCommand();
+            
+            cmd.CommandText = @"INSERT INTO users(id, name, email, subject, issuer)
+                                 VALUES (@id, @name, @email, @subject, @issuer);";
+            
             cmd.Parameters.AddWithValue("id", NpgsqlDbType.Uuid, user.Id);
             cmd.Parameters.AddWithValue("name", NpgsqlDbType.Text, user.Name);
             cmd.Parameters.AddWithValue("email", NpgsqlDbType.Text, user.Email);

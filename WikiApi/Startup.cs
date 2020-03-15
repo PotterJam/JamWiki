@@ -31,7 +31,7 @@ namespace WikiApi
         
         private PostgresConfiguration PostgresConfiguration => new PostgresConfiguration
         {
-            DbName = Configuration.GetValue<string>("DB_NAME"),
+            Database = Configuration.GetValue<string>("DB_NAME"),
             Host = Configuration.GetValue<string>("DB_HOST"),
             Port = Configuration.GetValue<int>("DB_PORT"),
             Username = Configuration.GetValue<string>("DB_USER_NAME"),
