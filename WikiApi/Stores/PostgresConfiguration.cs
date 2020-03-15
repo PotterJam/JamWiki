@@ -1,4 +1,4 @@
-﻿namespace WikiApi
+﻿namespace WikiApi.Stores
 {
     public class PostgresConfiguration
     {
