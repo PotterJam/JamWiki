@@ -28,7 +28,15 @@ namespace JamWiki.Api.Users
         public async Task<WikiUser> GetUser(GoogleJsonWebSignature.Payload payload)
         {
             await using var conn = new NpgsqlConnection(m_ConnectionString);
-            await conn.OpenAsync();
+
+            try
+            {
+                await conn.OpenAsync();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
 
             await using var cmd = conn.CreateCommand();
             

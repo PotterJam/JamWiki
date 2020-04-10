@@ -83,6 +83,7 @@ namespace JamWiki.Api
             else
             {
                 app.UseExceptionHandler("/Error");
+                IdentityModelEventSource.ShowPII = true;
             }
             
             app.UseCors(x => x

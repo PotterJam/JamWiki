@@ -20,6 +20,7 @@ echo "Building docker image"
 docker build -t jamwiki .
 
 echo "Running production docker build"
-docker run -d -p 5000:80 --env-file env.production --name wikiapi jamwiki || { echo "Docker run failed" ; exit 1; }
+HOSTIP=`ip -4 addr show scope global dev eth0 | grep inet | awk '{print $2}' | cut -d / -f 1 | sed -n 2p`
+docker run --add-host=database:${HOSTIP} -d -p 5000:5000 --env-file env.production --name wikiapi jamwiki || { echo "Docker run failed" ; exit 1; }
 
 echo "Production build complete and running :)"
