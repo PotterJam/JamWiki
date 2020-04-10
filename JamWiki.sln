@@ -1,6 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WikiApi", "WikiApi\WikiApi.csproj", "{FAB727B5-28FB-4614-9CEB-6B84798D5FD9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JamWiki.Api", "JamWiki.Api\JamWiki.Api.csproj", "{FAB727B5-28FB-4614-9CEB-6B84798D5FD9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JamWiki.Api.Auth", "JamWiki.Api.Auth\JamWiki.Api.Auth.csproj", "{BD82C310-4AD4-4E2B-8A34-6291ABFEDA43}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JamWiki.Api.Wikis", "JamWiki.Api.Wikis\JamWiki.Api.Wikis.csproj", "{8F5846A4-A1F6-4660-AE3E-76D5988D8550}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JamWiki.Api.Users", "JamWiki.Api.Users\JamWiki.Api.Users.csproj", "{15A2C0E7-594E-431F-AEAF-FDFDDF535740}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JamWiki.Api.Config", "JamWiki.Api.Config\JamWiki.Api.Config.csproj", "{817B139D-A58A-4FE2-8559-64126A0A61FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JamWiki.Api.Security", "JamWiki.Api.Security\JamWiki.Api.Security.csproj", "{D564CDE0-3DAC-4A56-9282-933A8CD17B5D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +22,25 @@ Global
 		{FAB727B5-28FB-4614-9CEB-6B84798D5FD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAB727B5-28FB-4614-9CEB-6B84798D5FD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAB727B5-28FB-4614-9CEB-6B84798D5FD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD82C310-4AD4-4E2B-8A34-6291ABFEDA43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD82C310-4AD4-4E2B-8A34-6291ABFEDA43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD82C310-4AD4-4E2B-8A34-6291ABFEDA43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD82C310-4AD4-4E2B-8A34-6291ABFEDA43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F5846A4-A1F6-4660-AE3E-76D5988D8550}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F5846A4-A1F6-4660-AE3E-76D5988D8550}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F5846A4-A1F6-4660-AE3E-76D5988D8550}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F5846A4-A1F6-4660-AE3E-76D5988D8550}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15A2C0E7-594E-431F-AEAF-FDFDDF535740}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15A2C0E7-594E-431F-AEAF-FDFDDF535740}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15A2C0E7-594E-431F-AEAF-FDFDDF535740}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15A2C0E7-594E-431F-AEAF-FDFDDF535740}.Release|Any CPU.Build.0 = Release|Any CPU
+		{817B139D-A58A-4FE2-8559-64126A0A61FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{817B139D-A58A-4FE2-8559-64126A0A61FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{817B139D-A58A-4FE2-8559-64126A0A61FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{817B139D-A58A-4FE2-8559-64126A0A61FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D564CDE0-3DAC-4A56-9282-933A8CD17B5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D564CDE0-3DAC-4A56-9282-933A8CD17B5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D564CDE0-3DAC-4A56-9282-933A8CD17B5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D564CDE0-3DAC-4A56-9282-933A8CD17B5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

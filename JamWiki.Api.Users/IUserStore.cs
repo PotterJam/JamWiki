@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Google.Apis.Auth;
 
-namespace WikiApi.Stores.User
+namespace JamWiki.Api.Stores.User
 {
     public interface IUserStore
     {

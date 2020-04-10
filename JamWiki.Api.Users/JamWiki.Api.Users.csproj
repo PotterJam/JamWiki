@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Google.Apis.Auth.AspNetCore3" Version="1.45.0-beta01" />
+      <PackageReference Include="Npgsql" Version="4.1.3.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\JamWiki.Api.Config\JamWiki.Api.Config.csproj" />
+      <ProjectReference Include="..\JamWiki.Api.Security\JamWiki.Api.Security.csproj" />
+    </ItemGroup>
+
+</Project>

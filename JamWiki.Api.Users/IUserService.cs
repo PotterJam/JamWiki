@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Google.Apis.Auth;
 
-namespace WikiApi.Services
+namespace JamWiki.Api.Services
 {
     public interface IUserService
     {

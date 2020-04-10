@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace WikiApi.Helpers
+namespace JamWiki.Api.Helpers
 {
     public class Security
     {

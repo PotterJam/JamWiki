@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WikiApi
+namespace JamWiki.Api
 {
     public class Wiki
     {

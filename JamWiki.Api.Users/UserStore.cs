@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Google.Apis.Auth;
+using JamWiki.Api.Stores.User;
 using Npgsql;
 using NpgsqlTypes;
-using WikiApi.Stores.User;
 
-namespace WikiApi.Stores.Users
+namespace JamWiki.Api.Stores.Users
 {
     public class UserStore : IUserStore
     {
@@ -47,7 +47,8 @@ namespace WikiApi.Stores.Users
                 return await CreateUser(payload);
             }
 
-            return new WikiUser
+            return new
+                WikiUser
             {
                 Id = (Guid) reader["id"],
                 Name = (string) reader["name"],

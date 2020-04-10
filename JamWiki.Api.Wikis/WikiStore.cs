@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Npgsql;
 using NpgsqlTypes;
 
-namespace WikiApi.Stores.Wikis
+namespace JamWiki.Api.Stores.Wikis
 {
     public class WikiStore : IWikiStore
     {
@@ -25,7 +25,7 @@ namespace WikiApi.Stores.Wikis
             m_ConnectionString = connectionStrBuilder.ToString();
         }
 
-        public async Task<Wiki> GetWikiByName(string wikiName, WikiUser wikiUser)
+        public async Task<Wiki> GetWikiByName(string wikiName, WikiUser wikiWikiUser)
         {
             await using var conn = new NpgsqlConnection(m_ConnectionString);
             await conn.OpenAsync();
@@ -36,7 +36,7 @@ namespace WikiApi.Stores.Wikis
                                         WHERE name    = @name
                                         AND   user_id = @user_id;";
 
-            cmd.Parameters.AddWithValue("user_id", NpgsqlDbType.Uuid, wikiUser.Id);
+            cmd.Parameters.AddWithValue("user_id", NpgsqlDbType.Uuid, wikiWikiUser.Id);
             cmd.Parameters.AddWithValue("name", NpgsqlDbType.Text, wikiName);
 
             await using var reader = await cmd.ExecuteReaderAsync();

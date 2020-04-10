@@ -6,10 +6,10 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using Google.Apis.Auth;
-using WikiApi.Helpers;
-using WikiApi.Stores.User;
+using JamWiki.Api.Helpers;
+using JamWiki.Api.Stores.User;
 
-namespace WikiApi.Services
+namespace JamWiki.Api.Services
 {
     public class UserService : IUserService
     {

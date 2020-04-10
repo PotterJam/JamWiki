@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Hosting;
 
-namespace WikiApi
+namespace JamWiki.Api
 {
     class Program
     {

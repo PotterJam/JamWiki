@@ -1,4 +1,4 @@
-﻿namespace WikiApi.Stores
+﻿namespace JamWiki.Api.Stores
 {
     public class PostgresConfiguration
     {

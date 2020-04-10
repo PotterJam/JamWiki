@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using JamWiki.Api.Services;
+using JamWiki.Api.Stores.Wikis;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WikiApi.Services;
-using WikiApi.Stores.Wikis;
 
-namespace WikiApi.Controllers
+namespace JamWiki.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

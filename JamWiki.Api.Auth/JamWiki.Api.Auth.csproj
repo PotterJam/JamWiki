@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>JamWiki.Auth</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Google.Apis.Auth.AspNetCore3" Version="1.45.0-beta01" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\JamWiki.Api.Config\JamWiki.Api.Config.csproj" />
+      <ProjectReference Include="..\JamWiki.Api.Users\JamWiki.Api.Users.csproj" />
+    </ItemGroup>
+
+</Project>

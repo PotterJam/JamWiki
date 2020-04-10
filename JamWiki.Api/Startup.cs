@@ -1,5 +1,10 @@
 ﻿using System;
 using System.Text;
+using JamWiki.Api.Services;
+using JamWiki.Api.Stores;
+using JamWiki.Api.Stores.User;
+using JamWiki.Api.Stores.Users;
+using JamWiki.Api.Stores.Wikis;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,13 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
-using WikiApi.Services;
-using WikiApi.Stores;
-using WikiApi.Stores.User;
-using WikiApi.Stores.Users;
-using WikiApi.Stores.Wikis;
 
-namespace WikiApi
+namespace JamWiki.Api
 {
     public class Startup
     {

@@ -1,4 +1,4 @@
-﻿namespace WikiApi
+﻿namespace JamWiki.Api
 {
     public class SecurityConfiguration
     {

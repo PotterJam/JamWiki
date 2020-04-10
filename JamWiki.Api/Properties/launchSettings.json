@@ -1,0 +1,16 @@
+﻿{
+  "profiles": {
+    "Development": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DB_NAME": "wikiapi",
+        "DB_HOST": "localhost",
+        "DB_PORT": "5433",
+        "DB_USER_NAME": "jamwikiapp",
+        "DB_PASSWORD": "jamwikiapp",
+        "USER_CREDENTIALS_KEY": "DoVKvEmt3FOm8pLQwj4FLZeED4x2HFUXrp52S5QPbFMTmqdaWDtRzdtaKCpJbKsLFR0SbPGYh9NMATLXOHlzOYGodHkqV7LHzBubKsLFR0SbPGYh9NMATLXOHlzOYGodHkqV7LHzBubKsLFR0SbPGYh9NMATLXOHlzOYGodHkqV7LHzBubKsLFR0SbPYh",
+        "JWT_SIGNING_KEY": "DoVKvEmt3FOm8pLQwj4FLZeED4x2HFUXrp52S5QPbFMTmqdaWDtRzdtaKCpJbKsLFR0SbPGYh9NMATLXOHlzOYGodHkqV7LHzBuRzdtaKCpJbKsLFR0SbPGYh9NMATLXOHlzOYGodHkqV7LHzBuRzdtaKCpJbKsLFR0SbPGYh9NMATLXOHlzOYGodHkqV7LzBu"
+      }
+    }
+  }
+}
