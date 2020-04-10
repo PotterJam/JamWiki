@@ -12,19 +12,21 @@ namespace WikiApi.Helpers
             try
             {
                 byte[] keyArray;
-                byte[] toEncryptArray = UTF8Encoding.UTF8.GetBytes(toEncrypt);
+                byte[] toEncryptArray = Encoding.UTF8.GetBytes(toEncrypt);
 
                 if (useHashing)
                 {
                     using (MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider())
                     {
-                        keyArray = hashmd5.ComputeHash(UTF8Encoding.UTF8.GetBytes(key));
+                        keyArray = hashmd5.ComputeHash(Encoding.UTF8.GetBytes(key));
                     }
                 }
                 else
-                    keyArray = UTF8Encoding.UTF8.GetBytes(key);
+                {
+                    keyArray = Encoding.UTF8.GetBytes(key);
+                }
 
-                
+
                 using (TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider())
                 {
                     tdes.Key = keyArray;
@@ -39,6 +41,7 @@ namespace WikiApi.Helpers
             {
                 // log
             }
+
             return Convert.ToBase64String(resultArray, 0, resultArray.Length);
         }
 
@@ -54,11 +57,11 @@ namespace WikiApi.Helpers
                 {
                     using (MD5CryptoServiceProvider hashmd5 = new MD5CryptoServiceProvider())
                     {
-                        keyArray = hashmd5.ComputeHash(UTF8Encoding.UTF8.GetBytes(key));
+                        keyArray = hashmd5.ComputeHash(Encoding.UTF8.GetBytes(key));
                     }
                 }
                 else
-                    keyArray = UTF8Encoding.UTF8.GetBytes(key);
+                    keyArray = Encoding.UTF8.GetBytes(key);
 
                 
                 using (TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider())
@@ -67,7 +70,7 @@ namespace WikiApi.Helpers
                     tdes.Mode = CipherMode.ECB;
                     tdes.Padding = PaddingMode.PKCS7;
 
-                    ICryptoTransform cTransform = tdes.CreateDecryptor();
+                    var cTransform = tdes.CreateDecryptor();
                     resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
                 }
             }
@@ -75,7 +78,7 @@ namespace WikiApi.Helpers
             {
                 // log
             }
-            return UTF8Encoding.UTF8.GetString(resultArray);
+            return Encoding.UTF8.GetString(resultArray);
         }
     }
 }
