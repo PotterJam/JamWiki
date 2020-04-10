@@ -54,7 +54,18 @@
         </v-card>
       </v-dialog>
 
-      <v-btn text icon color="primary" v-on:click="deleteWiki" id="wiki-but"><v-icon>mdi-delete</v-icon></v-btn>
+      <v-dialog v-model="areYouSureDeleteDialog" max-width="235">
+        <template v-slot:activator="{ on }">
+          <v-btn text icon color="primary" v-on="on" id="wiki-but"><v-icon>mdi-delete</v-icon></v-btn>
+        </template>
+        <v-card class="pl-5 pr-5">
+          <v-card-title class="headline pb-1">Are you sure?</v-card-title>
+          <v-card-actions class="d-flex justify-center" id="deleteWikiButModal">
+            <v-btn color="green darken-1" text v-on:click="deleteWiki">Yes</v-btn>
+            <v-btn color="red darken-1" text v-on:click="areYouSureDeleteDialog = false">No</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </div>
 
     <v-expand-transition>
@@ -100,6 +111,7 @@ export default {
       isSavingWiki: false,
       currentWikiName: null,
       addWikiDialog: false,
+      areYouSureDeleteDialog: false,
       createWikiModalInput: null,
       createWikiModalTags: []
     }
@@ -174,6 +186,7 @@ export default {
             this.wikiBody = null
             this.currentWikiName = null;
             this.editing = null;
+            this.areYouSureDeleteDialog = false
           })
     }
   },
