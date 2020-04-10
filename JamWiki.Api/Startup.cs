@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Text;
-using JamWiki.Api.Services;
+using JamWiki.Api.Config;
 using JamWiki.Api.Stores;
-using JamWiki.Api.Stores.User;
-using JamWiki.Api.Stores.Users;
-using JamWiki.Api.Stores.Wikis;
+using JamWiki.Api.Users;
+using JamWiki.Api.Wikis;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

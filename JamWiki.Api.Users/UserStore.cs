@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Google.Apis.Auth;
-using JamWiki.Api.Stores.User;
+using JamWiki.Api.Config;
 using Npgsql;
 using NpgsqlTypes;
 
-namespace JamWiki.Api.Stores.Users
+namespace JamWiki.Api.Users
 {
     public class UserStore : IUserStore
     {

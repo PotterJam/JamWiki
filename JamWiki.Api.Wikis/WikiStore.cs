@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using JamWiki.Api.Config;
+using JamWiki.Api.Users;
 using Npgsql;
 using NpgsqlTypes;
 
-namespace JamWiki.Api.Stores.Wikis
+namespace JamWiki.Api.Wikis
 {
     public class WikiStore : IWikiStore
     {

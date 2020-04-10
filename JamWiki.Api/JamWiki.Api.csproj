@@ -6,9 +6,6 @@
     <LangVersion>8</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Controllers" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\JamWiki.Api.Auth\JamWiki.Api.Auth.csproj" />
     <ProjectReference Include="..\JamWiki.Api.Config\JamWiki.Api.Config.csproj" />
     <ProjectReference Include="..\JamWiki.Api.Users\JamWiki.Api.Users.csproj" />

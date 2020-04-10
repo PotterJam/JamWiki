@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using JamWiki.Api.Users;
 
-namespace JamWiki.Api.Stores.Wikis
+namespace JamWiki.Api.Wikis
 {
     public interface IWikiStore
     {

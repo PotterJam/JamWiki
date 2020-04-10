@@ -6,10 +6,9 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using Google.Apis.Auth;
-using JamWiki.Api.Helpers;
-using JamWiki.Api.Stores.User;
+using JamWiki.Api.Config;
 
-namespace JamWiki.Api.Services
+namespace JamWiki.Api.Users
 {
     public class UserService : IUserService
     {
@@ -52,6 +51,6 @@ namespace JamWiki.Api.Services
         }
 
         private string DecryptJwtClaim(string encryptedClaim) =>
-            Security.Decrypt(_securityConfiguration.UserCredentialKey, encryptedClaim);
+            Security.Security.Decrypt(_securityConfiguration.UserCredentialKey, encryptedClaim);
     }
 }

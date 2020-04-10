@@ -4,14 +4,16 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Google.Apis.Auth;
-using JamWiki.Api.Helpers;
-using JamWiki.Api.Services;
+using JamWiki.Api;
+using JamWiki.Api.Config;
+using JamWiki.Api.Security;
+using JamWiki.Api.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
-namespace JamWiki.Api.Controllers
+namespace JamWiki.Auth
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]

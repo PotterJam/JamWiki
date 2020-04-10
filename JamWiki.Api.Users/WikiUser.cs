@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace JamWiki.Api
+namespace JamWiki.Api.Users
 {
     public class WikiUser
     {
