@@ -21,10 +21,10 @@ namespace JamWiki.Api.Users
                 Username = postgresConfiguration.Username,
                 Password = postgresConfiguration.Password
             };
-            
+
             m_ConnectionString = connectionStrBuilder.ToString();
         }
-        
+
         public async Task<WikiUser> GetUser(GoogleJsonWebSignature.Payload payload)
         {
             await using var conn = new NpgsqlConnection(m_ConnectionString);
@@ -35,6 +35,7 @@ namespace JamWiki.Api.Users
             }
             catch (Exception e)
             {
+                Console.WriteLine(e);
                 throw;
             }
 
