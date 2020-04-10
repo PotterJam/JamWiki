@@ -168,9 +168,12 @@ export default {
           .delete('/api/wiki', {
             data: { name: wiki }
           }).then(() => {
-            this.wikiBody = 'Wiki deleted';
-            this.currentWikiName = null;
             this.wikiNames = this.wikiNames.filter(x => x != wiki);
+
+            // TODO: add a 'deleted wiki' notification of sorts
+            this.wikiBody = null
+            this.currentWikiName = null;
+            this.editing = null;
           })
     }
   },
