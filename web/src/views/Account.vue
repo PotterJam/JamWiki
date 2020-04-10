@@ -59,7 +59,7 @@ export default {
       that.isInit = that.$gAuth.isInit;
       if (that.isInit) {
         clearInterval(checkGauthLoad);
-        that.userEmail = that.$gAuth.GoogleAuth.currentUser.get().getBasicProfile().U3;
+        that.userEmail = that.$gAuth.GoogleAuth.currentUser.get().Qt.zu;
       }
     }, 1000);
   }
