@@ -136,7 +136,7 @@ export default {
             tags: self.wikiTags
           }).finally(() => setTimeout(function() {
             self.isSavingWiki = false
-          }, 250)); // this adds time so the loading works
+          }, 250)); // this adds a delay so the loading works
     },
     addWiki() {
       if (this.createWikiModalInput == null 
@@ -147,29 +147,30 @@ export default {
       const wikiNameBeingAdded = this.createWikiModalInput;
 
       this.axios
-          .post('/api/wiki', {
-            name: wikiNameBeingAdded,
-            body: '',
-            tags: this.createWikiModalTags
-          }).then(() => {
-            this.wikiBody = 'Wiki added'
-            this.currentWikiName = wikiNameBeingAdded;
-            this.wikiNames.push(wikiNameBeingAdded);
-            this.addWikiDialog = false;
-            this.wikiName = this.createWikiModalInput;
-            this.createWikiModalInput = null;
-            this.wikiTags = this.createWikiModalTags;
-            this.createWikiModalTags = [];
-          });
+        .post('/api/wiki', {
+          name: wikiNameBeingAdded,
+          body: '',
+          tags: this.createWikiModalTags
+        }).then(() => {
+          this.wikiBody = 'Wiki added'
+          this.currentWikiName = wikiNameBeingAdded;
+          this.wikiNames.push(wikiNameBeingAdded);
+          this.addWikiDialog = false;
+          this.wikiName = this.createWikiModalInput;
+          this.createWikiModalInput = null;
+          this.wikiTags = this.createWikiModalTags;
+          this.createWikiModalTags = [];
+        });
     },
     deleteWiki() {
+      const wiki = this.currentWikiName;
       this.axios
           .delete('/api/wiki', {
-            data: { name: this.currentWikiName }
+            data: { name: wiki }
           }).then(() => {
             this.wikiBody = 'Wiki deleted';
             this.currentWikiName = null;
-            this.wikiNames = this.wikiNames.filter(x => x != this.currentWikiName);
+            this.wikiNames = this.wikiNames.filter(x => x != wiki);
           })
     }
   },
