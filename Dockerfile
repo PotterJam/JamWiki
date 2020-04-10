@@ -1,16 +1,16 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
-COPY *.csproj ./
+COPY . /app/
 RUN dotnet restore
 
 # Copy everything else and build
-COPY . ./
-RUN dotnet publish -c Release -o out
+COPY . /app/
+RUN dotnet publish -c Release -o /app/out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS aspnet
 WORKDIR /app
-COPY --from=build-env /app/out .
+COPY --from=build /app/out .
 ENTRYPOINT ["dotnet", "JamWiki.Api.dll"]
