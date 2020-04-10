@@ -12,11 +12,13 @@ namespace JamWiki.Api
             await host.RunAsync();
         }
         
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
+        private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder
+                        .UseKestrel()
+                        .UseUrls("http://*:5000") // Take that, Docker port forwarding!!!
                         .UseStartup<Startup>();
                 });
     }

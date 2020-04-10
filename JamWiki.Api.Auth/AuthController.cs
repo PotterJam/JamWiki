@@ -4,7 +4,6 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Google.Apis.Auth;
-using JamWiki.Api;
 using JamWiki.Api.Config;
 using JamWiki.Api.Security;
 using JamWiki.Api.Users;
