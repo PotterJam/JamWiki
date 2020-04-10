@@ -68,9 +68,9 @@ namespace WikiApi
             services.AddSingleton(PostgresConfiguration);
             services.AddSingleton(SecurityConfiguration);
 
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IUserStore, UserStore>();
-            services.AddTransient<IWikiStore, WikiStore>();
+            services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IUserStore, UserStore>();
+            services.AddSingleton<IWikiStore, WikiStore>();
 
             services.AddControllers();
         }
