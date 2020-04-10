@@ -1,8 +1,8 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,7 +22,8 @@ namespace WikiApi
         
         public Startup()
         {
-            var builder = new ConfigurationBuilder().AddEnvironmentVariables();
+            var builder = new ConfigurationBuilder()
+                .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
         
@@ -44,7 +45,6 @@ namespace WikiApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
 
             services.AddAuthentication(options =>
             {

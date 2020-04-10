@@ -1,15 +1,15 @@
 ﻿{
   "profiles": {
-    "JamWiki": {
+    "Development": {
       "commandName": "Project",
       "environmentVariables": {
         "DB_NAME": "wikiapi",
         "DB_HOST": "localhost",
         "DB_PORT": "5433",
         "DB_USER_NAME": "jamwikiapp",
-        "DB_PASSWORD": "",
         "USER_CREDENTIALS_KEY": "",
         "JWT_SIGNING_KEY": ""
+        "DB_PASSWORD": "jamwikiapp",
       }
     }
   }
