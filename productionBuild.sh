@@ -20,7 +20,7 @@ echo "Removing old docker image"
 docker stop wikiapi; docker rm wikiapi
 
 echo "Building docker image"
-docker build -t jamwiki .
+docker build -t jamwiki . || { echo "Building docker image failed" ; exit 1; }
 
 echo "Running production docker build"
 HOSTIP=`ip -4 addr show scope global dev docker0 | grep inet | awk '{print $2}' | cut -d / -f 1 | sed -n 1p`
