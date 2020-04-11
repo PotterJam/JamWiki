@@ -70,19 +70,22 @@
 
     <v-expand-transition>
       <div v-show="wikiBody !== null" class="mx-auto" id="wiki-body-wrapper">
-        <div id="wiki-body">
-          <v-textarea :auto-grow="true" solo label="Wiki body goes here..." v-model="wikiBody"></v-textarea>
-          <v-combobox
-              min-width="300"
-              v-model="wikiTags"
-              :items="[]"
-              label="Add wiki tags"
-              multiple
-              chips
-              append-icon=""
-              solo
-            ></v-combobox>
+        <div id="wiki-editor" class="pb-4">
+          <!-- move this to its own component (actually, just do this for EVERYTHING) -->
+          <tiptap-vuetify v-model="wikiBody" :extensions="extensions" placeholder="Write something …"/>
+          <!------------------------------------>
         </div>
+
+        <v-combobox
+            min-width="300"
+            v-model="wikiTags"
+            :items="[]"
+            label="Add wiki tags"
+            multiple
+            chips
+            append-icon=""
+            solo
+          ></v-combobox>
       </div>
     </v-expand-transition>
   </div>
@@ -91,13 +94,66 @@
 <script>
 import WikiHome from '@/components/WikiHome'
 
+import {
+  // eslint-disable-next-line no-unused-vars
+  TiptapVuetify,
+  Heading,
+  Bold,
+  Italic,
+  Underline,
+  Code,
+  CodeBlock,
+  BulletList,
+  OrderedList,
+  ListItem,
+  Link,
+  Blockquote,
+  HardBreak,
+  HorizontalRule,
+  History,
+  TodoList,
+  TodoItem
+} from 'tiptap-vuetify'
+
 export default {
   name: 'home',
   components: {
-    WikiHome
+    WikiHome,
+    TiptapVuetify
   },
   data () {
     return {
+      extensions: [
+      Blockquote,
+      Link,
+      Bold,
+      Underline,
+      Italic,
+      ListItem, // if you need to use a list (BulletList, OrderedList)
+      BulletList,
+      OrderedList,
+      [
+        Heading,
+        {
+          // Options that fall into the tiptap's extension
+          options: {
+            levels: [1, 2]
+          }
+        }
+      ],
+      Link,
+      Code,
+      CodeBlock,
+      HorizontalRule,
+      TodoList,
+      [TodoItem, {
+        options: {
+          nested: true
+        }
+      }],
+      HardBreak, // line break on Shift + Ctrl + Enter
+      History,
+      ],
       wikiName: null,
       wikiBody: null,
       wikiTags: [],
@@ -126,6 +182,9 @@ export default {
       .then(response => this.wikiNames = response.data)
       .catch(err => console.log(err))
       .finally(() => this.isLoading = false)
+  },
+  beforeDestroy() {
+    this.editor.destroy()
   },
   methods: {
     edit(index, item) {
@@ -212,13 +271,12 @@ export default {
 
 #wiki-body-wrapper {
   padding: 1em;
-  width: 40em;
+  margin-bottom: 1em;
+  width: 43em;
 }
 
-#wiki-body {
-  display: flex;
-  flex-direction: column;
-  align-content: center
+#wiki-editor {
+  text-align: left;
 }
 
 #wiki-input-wrapper {

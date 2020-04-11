@@ -13,6 +13,8 @@
     "bootstrap-vue": "^2.1.0",
     "core-js": "^3.3.2",
     "jquery": "^3.4.1",
+    "material-design-icons-iconfont": "^5.0.1",
+    "tiptap-vuetify": "^2.13.2",
     "vue": "^2.6.10",
     "vue-axios": "^2.1.5",
     "vue-google-oauth2": "^1.4.0",
