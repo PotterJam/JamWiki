@@ -2,7 +2,6 @@
   <div class="home">
     <v-expand-transition>
       <v-card
-        color="#fafafa"
         flat
         v-show="wikiBody === null"
         class="mx-auto"
@@ -182,9 +181,6 @@ export default {
       .then(response => this.wikiNames = response.data)
       .catch(err => console.log(err))
       .finally(() => this.isLoading = false)
-  },
-  beforeDestroy() {
-    this.editor.destroy()
   },
   methods: {
     edit(index, item) {
