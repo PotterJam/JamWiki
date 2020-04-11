@@ -3,8 +3,9 @@
     <div id="header">
       <div id="nav" v-if="this.$store.getters.isAuthenticated">
         <router-link to="/">Wikis</router-link> |
-        <router-link to="/account">Account</router-link> |
-        <router-link to="/tags">Tags</router-link>
+        <router-link to="/account">Account</router-link>
+        <!-- Removing tags tab until finished -->
+        <!--<router-link to="/tags">Tags</router-link> -->
       </div>
     </div>
     <router-view/>
