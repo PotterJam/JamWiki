@@ -71,7 +71,7 @@
     <v-expand-transition>
       <div v-show="wikiBody !== null" class="mx-auto" id="wiki-body-wrapper">
         <div id="wiki-body">
-          <v-textarea solo label="Wiki body goes here..." rows="37" v-model="wikiBody"></v-textarea>
+          <v-textarea :auto-grow="true" solo label="Wiki body goes here..." v-model="wikiBody"></v-textarea>
           <v-combobox
               min-width="300"
               v-model="wikiTags"
