@@ -53,11 +53,10 @@ namespace JamWiki.Api.Users
             {
                 // user hasn't got an account
                 reader.Close();
-                return await CreateUser(payload);
+                return null;
             }
 
-            return new
-                WikiUser
+            return new WikiUser
             {
                 Id = (Guid) reader["id"],
                 Name = (string) reader["name"],
@@ -67,7 +66,7 @@ namespace JamWiki.Api.Users
             };
         }
 
-        private async Task<WikiUser> CreateUser(GoogleJsonWebSignature.Payload payload)
+        public async Task<WikiUser> CreateUser(GoogleJsonWebSignature.Payload payload)
         {
             var user = new WikiUser
             {

@@ -40,7 +40,7 @@ namespace JamWiki.Auth
             try
             {
                 var payload = await GoogleJsonWebSignature.ValidateAsync(userView.tokenId, new GoogleJsonWebSignature.ValidationSettings());
-                var user = await _userService.Authenticate(payload);
+                var user = await _userService.GetOrCreateUser(payload);
 
                 var claims = new[]
                 {

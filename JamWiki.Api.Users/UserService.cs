@@ -21,9 +21,15 @@ namespace JamWiki.Api.Users
             _securityConfiguration = securityConfiguration ?? throw new ArgumentNullException(nameof(securityConfiguration));;
         }
 
-        public async Task<WikiUser> Authenticate(GoogleJsonWebSignature.Payload payload)
+        public async Task<WikiUser> GetOrCreateUser(GoogleJsonWebSignature.Payload payload)
         {
-            return await _userStore.GetUser(payload);
+            var user = await _userStore.GetUser(payload);
+            if (user == null)
+            {
+                return await _userStore.CreateUser(payload);
+            }
+
+            return user;
         }
 
         public Task<WikiUser> GetWikiUser(IPrincipal principal)

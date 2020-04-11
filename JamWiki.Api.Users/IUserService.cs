@@ -6,7 +6,7 @@ namespace JamWiki.Api.Users
 {
     public interface IUserService
     {
-        Task<WikiUser> Authenticate(GoogleJsonWebSignature.Payload payload);
+        Task<WikiUser> GetOrCreateUser(GoogleJsonWebSignature.Payload payload);
         Task<WikiUser> GetWikiUser(IPrincipal principal);
     }
 }
