@@ -27,7 +27,7 @@ namespace JamWiki.Api.Wikis
             m_ConnectionString = connectionStrBuilder.ToString();
         }
 
-        public async Task<Wiki> GetWikiByName(string wikiName, WikiUser wikiWikiUser)
+        public async Task<Wiki> GetWikiByName(string wikiName, WikiUser wikiUser)
         {
             await using var conn = new NpgsqlConnection(m_ConnectionString);
             await conn.OpenAsync();
@@ -38,7 +38,7 @@ namespace JamWiki.Api.Wikis
                                         WHERE name    = @name
                                         AND   user_id = @user_id;";
 
-            cmd.Parameters.AddWithValue("user_id", NpgsqlDbType.Uuid, wikiWikiUser.Id);
+            cmd.Parameters.AddWithValue("user_id", NpgsqlDbType.Uuid, wikiUser.Id);
             cmd.Parameters.AddWithValue("name", NpgsqlDbType.Text, wikiName);
 
             await using var reader = await cmd.ExecuteReaderAsync();
@@ -55,8 +55,6 @@ namespace JamWiki.Api.Wikis
             var wikiTags = tagsFromReader is DBNull
                 ? Enumerable.Empty<string>()
                 : (string[]) tagsFromReader;
-
-            // TODO: make sure wiki name is unique (set in db table)
 
             return new Wiki(wikiId, wikiName, wikiBody, wikiTags);
         }
@@ -89,7 +87,6 @@ namespace JamWiki.Api.Wikis
                 var tagsFromReader = reader["tags"];
                 var wikiTags = tagsFromReader is DBNull ? Enumerable.Empty<string>() : (string[]) tagsFromReader;
 
-                // TODO: make sure wiki name is unique (set in db table)
                 wikis.Add(new Wiki(wikiId, wikiName, wikiBody, wikiTags));
             }
             return wikis;
@@ -184,7 +181,9 @@ namespace JamWiki.Api.Wikis
             await using var cmd = conn.CreateCommand();
             
             cmd.CommandText = @"UPDATE wikis
-                                SET body = @body, tags = @tags
+                                SET body = @body,
+                                    tags = @tags,
+                                    last_modified = now()
                                 WHERE name = @name
                                 AND user_id=@user_id;";
             
