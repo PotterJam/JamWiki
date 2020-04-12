@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="editor">
     <tiptap-vuetify
       :value="body"
       v-on:input="$emit('update:body', $event)"
@@ -79,3 +79,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+  #editor {
+    text-align: left;
+  }
+</style>

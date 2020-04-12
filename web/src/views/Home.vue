@@ -157,10 +157,6 @@ export default {
   width: 43em;
 }
 
-#wiki-editor {
-  text-align: left;
-}
-
 #wiki-input-wrapper {
   display: flex;
   justify-content: space-around;
