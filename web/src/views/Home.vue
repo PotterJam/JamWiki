@@ -70,9 +70,7 @@
     <v-expand-transition>
       <div v-show="wikiBody !== null" class="mx-auto" id="wiki-body-wrapper">
         <div id="wiki-editor" class="pb-4">
-          <!-- move this to its own component (actually, just do this for EVERYTHING) -->
-          <tiptap-vuetify v-model="wikiBody" :extensions="extensions" placeholder="Write something …"/>
-          <!------------------------------------>
+          <WikiEditor :body.sync="wikiBody" v-on:update="wikiBody = $event"/>
         </div>
 
         <v-combobox
@@ -92,67 +90,16 @@
 
 <script>
 import WikiHome from '@/components/WikiHome'
-
-import {
-  // eslint-disable-next-line no-unused-vars
-  TiptapVuetify,
-  Heading,
-  Bold,
-  Italic,
-  Underline,
-  Code,
-  CodeBlock,
-  BulletList,
-  OrderedList,
-  ListItem,
-  Link,
-  Blockquote,
-  HardBreak,
-  HorizontalRule,
-  History,
-  TodoList,
-  TodoItem
-} from 'tiptap-vuetify'
+import WikiEditor from '@/components/WikiEditor'
 
 export default {
   name: 'home',
   components: {
     WikiHome,
-    TiptapVuetify
+    WikiEditor
   },
   data () {
     return {
-      extensions: [
-      Blockquote,
-      Link,
-      Bold,
-      Underline,
-      Italic,
-      ListItem, // if you need to use a list (BulletList, OrderedList)
-      BulletList,
-      OrderedList,
-      [
-        Heading,
-        {
-          // Options that fall into the tiptap's extension
-          options: {
-            levels: [1, 2]
-          }
-        }
-      ],
-      Link,
-      Code,
-      CodeBlock,
-      HorizontalRule,
-      TodoList,
-      [TodoItem, {
-        options: {
-          nested: true
-        }
-      }],
-      HardBreak, // line break on Shift + Ctrl + Enter
-      History,
-      ],
       wikiName: null,
       wikiBody: null,
       wikiTags: [],
