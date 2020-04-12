@@ -70,7 +70,7 @@
     <v-expand-transition>
       <div v-show="wikiBody !== null" class="mx-auto" id="wiki-body-wrapper">
         <div id="wiki-editor" class="pb-4">
-          <WikiEditor :body.sync="wikiBody" v-on:update="wikiBody = $event"/>
+          <WikiEditor :body.sync="wikiBody" />
         </div>
 
         <v-combobox

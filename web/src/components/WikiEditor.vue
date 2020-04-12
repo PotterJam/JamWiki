@@ -2,7 +2,7 @@
   <div>
     <tiptap-vuetify
       :value="body"
-      v-on:input="$emit('update', $event)"
+      v-on:input="$emit('update:body', $event)"
       :extensions="extensions" placeholder="Write something …"
     />
   </div>
@@ -33,7 +33,7 @@ import {
 export default {
     name: 'WikiEditor',
     props: {
-        body: String
+      body: String
     },
     components: {
       TiptapVuetify
