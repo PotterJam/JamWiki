@@ -9,14 +9,16 @@
         height="120px"
         outlined
       >
-        <h3> <v-icon color=secondary>mdi-email</v-icon> {{ this.userEmail }}</h3>
+        <h3>
+          <v-icon color="secondary">mdi-email</v-icon> {{ this.userEmail }}
+        </h3>
         <v-btn
-            large
-            id="signoutBut"
-            color="primary"
-            @click="handleClickSignOut"
-            :disabled="!isInit"
-          >
+          large
+          id="signoutBut"
+          color="primary"
+          @click="handleClickSignOut"
+          :disabled="!isInit"
+        >
           <v-icon left>mdi-google</v-icon>
           sign out
         </v-btn>
@@ -35,22 +37,22 @@
 </template>
 
 <script>
-import { AUTH_LOGOUT } from '../store/actions/auth'
+import { AUTH_LOGOUT } from "../store/actions/auth";
 
 /* eslint-disable */
 export default {
-  name: 'Account',
+  name: "Account",
   data() {
     return {
       isInit: false,
-      userEmail: ''
+      userEmail: ""
     };
   },
   methods: {
     async handleClickSignOut() {
       await this.$gAuth.signOut();
       await this.$store.dispatch(AUTH_LOGOUT);
-      this.$router.go('/login');
+      this.$router.go("/login");
     }
   },
   created() {
@@ -67,19 +69,19 @@ export default {
 </script>
 
 <style scoped>
-  #accountCard {
-    display: flex;
-    justify-content: space-around;
-    align-content: space-around;
-    flex-direction: column;
-    height: 100%;
-  }
+#accountCard {
+  display: flex;
+  justify-content: space-around;
+  align-content: space-around;
+  flex-direction: column;
+  height: 100%;
+}
 
-  #spinny {
-    display: flex;
-    justify-content: center;
+#spinny {
+  display: flex;
+  justify-content: center;
 
-    /* padding hack to center spinny - needed because it's during routing so elements randomly dissapear */
-    padding-top: 45vh;
-  }
+  /* padding hack to center spinny - needed because it's during routing so elements randomly dissapear */
+  padding-top: 45vh;
+}
 </style>

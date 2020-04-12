@@ -1,62 +1,62 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import store from '../store' // your vuex store
+import Vue from "vue";
+import VueRouter from "vue-router";
+import store from "../store"; // your vuex store
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const ifNotAuthenticated = (to, from, next) => {
   if (!store.getters.isAuthenticated) {
-    next()
-    return
+    next();
+    return;
   }
-  next('/')
-}
+  next("/");
+};
 
 const ifAuthenticated = (to, from, next) => {
   if (store.getters.isAuthenticated) {
-    next()
-    return
+    next();
+    return;
   }
-  next('/login')
-}
+  next("/login");
+};
 
 const routes = [
   {
-    path: '/login',
-    name: 'Login',
-    component: () => import('../views/Login.vue'),
+    path: "/login",
+    name: "Login",
+    component: () => import("../views/Login.vue"),
     beforeEnter: ifNotAuthenticated
   },
   {
-    path: '/',
-    name: 'home',
-    component: () => import('../views/Home.vue'),
+    path: "/",
+    name: "home",
+    component: () => import("../views/Home.vue"),
     beforeEnter: ifAuthenticated
   },
   {
-    path: '/account',
-    name: 'Account',
-    component: () => import('../views/Account.vue'),
+    path: "/account",
+    name: "Account",
+    component: () => import("../views/Account.vue"),
     beforeEnter: ifAuthenticated
   },
   {
-    path: '/wikiswithtag/:tagName',
-    name: 'WikisWithTag',
-    component: () => import('../views/WikisWithTag.vue'),
+    path: "/wikiswithtag/:tagName",
+    name: "WikisWithTag",
+    component: () => import("../views/WikisWithTag.vue"),
     beforeEnter: ifAuthenticated
   },
   {
-    path: '/tags',
-    name: 'WikiTags',
-    component: () => import('../views/WikiTags.vue'),
+    path: "/tags",
+    name: "WikiTags",
+    component: () => import("../views/WikiTags.vue"),
     beforeEnter: ifAuthenticated
   }
-]
+];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
   routes
-})
+});
 
-export default router
+export default router;

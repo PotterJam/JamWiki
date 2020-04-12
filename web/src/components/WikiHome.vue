@@ -1,20 +1,20 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    
+
     <div id="logo">
-      <img alt="Jam Logo" src="../assets/jam-logo.png">
+      <img alt="Jam Logo" src="../assets/jam-logo.png" />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'WikiHome',
+  name: "WikiHome",
   props: {
     msg: String
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

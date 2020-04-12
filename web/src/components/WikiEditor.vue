@@ -3,7 +3,8 @@
     <tiptap-vuetify
       :value="body"
       v-on:input="$emit('update:body', $event)"
-      :extensions="extensions" placeholder="Write something …"
+      :extensions="extensions"
+      placeholder="Write something …"
     />
   </div>
 </template>
@@ -28,19 +29,19 @@ import {
   History,
   TodoList,
   TodoItem
-} from 'tiptap-vuetify'
+} from "tiptap-vuetify";
 
 export default {
-    name: 'WikiEditor',
-    props: {
-      body: String
-    },
-    components: {
-      TiptapVuetify
-    },
-    data() {
-      return {
-        extensions: [
+  name: "WikiEditor",
+  props: {
+    body: String
+  },
+  components: {
+    TiptapVuetify
+  },
+  data() {
+    return {
+      extensions: [
         Blockquote,
         Link,
         Bold,
@@ -63,15 +64,18 @@ export default {
         CodeBlock,
         HorizontalRule,
         TodoList,
-        [TodoItem, {
-          options: {
-            nested: true
+        [
+          TodoItem,
+          {
+            options: {
+              nested: true
+            }
           }
-        }],
+        ],
         HardBreak, // line break on Shift + Ctrl + Enter
-        History,
-        ]
-      }
-    }
-}
+        History
+      ]
+    };
+  }
+};
 </script>

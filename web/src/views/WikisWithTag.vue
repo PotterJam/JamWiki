@@ -1,14 +1,14 @@
 <template>
-    <h1>Wikis with tag {{ $route.params.tagName }}</h1>
+  <h1>Wikis with tag {{ $route.params.tagName }}</h1>
 </template>
 
 <script>
 export default {
-    name: 'WikiTags',
-    data () {
-        return {
-            tagName: null
-        }
-    }
-}
+  name: "WikiTags",
+  data() {
+    return {
+      tagName: null
+    };
+  }
+};
 </script>

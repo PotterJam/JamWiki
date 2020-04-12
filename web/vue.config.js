@@ -1,6 +1,6 @@
 module.exports = {
-  "devServer": {
-    "proxy": {
+  devServer: {
+    proxy: {
       "^/api": {
         target: "http://localhost:5000",
         ws: true,
@@ -8,16 +8,13 @@ module.exports = {
       }
     }
   },
-  "transpileDependencies": [
-    "vuetify",
-    "store"
-  ],
+  transpileDependencies: ["vuetify", "store"],
   configureWebpack: {
     optimization: {
       splitChunks: {
         minSize: 10000,
-        maxSize: 240000,
+        maxSize: 240000
       }
     }
   }
-}
+};
